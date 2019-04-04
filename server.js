@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 require("dotenv").config();
 var AWS = require("aws-sdk");
+const AmazonCognitoIdentity = require('amazon-cognito-identity-js');
+global.fetch = require('node-fetch');
 
 app.set("port", process.env.PORT || 3001);
 
@@ -101,6 +103,81 @@ const createLogins = function(callback) {
   };
   const bob = {email:'bob@gmail.com'}
   addNewUser(bob);
+
+  
+  app.use('/',require('./routes'))
+
+
+
+
+//==== Amazon congitito 
+// TO DO: Clean this is fam
+// UserInfo = {perferreeduserName,username,password,email}
+const signUp = (userInfo) => {
+
+var poolData = {
+    UserPoolId : process.env.aws_pool_id, // your user pool id here
+    ClientId : process.env.aws_app_client_id// your app client id here strange behavior
+};
+var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+var userData = {
+    Username : 'jord440', // your username here
+    Pool : userPool
+};
+
+//===sign up
+var attributeList = [];
+ 
+var dataEmail = {
+    Name : 'email',
+    Value : 'jordeguevara@gmail.com' // your email here
+};
+
+var attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute(dataEmail);
+
+
+var dataName = {
+    Name : 'preferred_username',
+    Value : 'jguavvaa' // your email here
+};
+
+var attributeName = new AmazonCognitoIdentity.CognitoUserAttribute(dataName);
+
+ 
+attributeList.push(attributeEmail);
+attributeList.push(attributeName)
+
+ 
+var cognitoUser;
+
+
+var password = 'Jasong12!'
+userPool.signUp('username', password, attributeList, null, function(err, result){
+    if (err) {
+        // console.log("im in error")
+        console.log(err);
+        return;
+    }
+    cognitoUser = result.user;
+    console.log('user name is ' + cognitoUser.getUsername());
+});
+}
+// end sign up
+//confirm user 
+
+
+//==
+
+
+
+
+
+
+
+
+
+
+ 
 
 app.listen(app.get("port"), () => {
   console.log(`Server at: http://localhost:${app.get("port")}/`);
