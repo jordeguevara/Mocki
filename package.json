@@ -14,7 +14,9 @@
     "concurrently": "^4.1.0"
   },
   "dependencies": {
+    "amazon-cognito-identity-js": "^3.0.10",
     "aws-sdk": "^2.435.0",
-    "dotenv": "^7.0.0"
+    "dotenv": "^7.0.0",
+    "node-fetch": "^2.3.0"
   }
 }
