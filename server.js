@@ -130,7 +130,7 @@ var attributeList = [];
  
 var dataEmail = {
     Name : 'email',
-    Value : 'jordeguevara@gmail.com' // your email here
+    Value : 'josafsfdafdra@gmail.com' // your email here
 };
 
 var attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute(dataEmail);
@@ -151,7 +151,7 @@ attributeList.push(attributeName)
 var cognitoUser;
 
 
-var password = 'Jasong12!'
+var password = 'fsfsfsfasong1fafsfafdfaf!'
 userPool.signUp('username', password, attributeList, null, function(err, result){
     if (err) {
         // console.log("im in error")
