@@ -4,12 +4,17 @@ require("dotenv").config();
 var AWS = require("aws-sdk");
 const AmazonCognitoIdentity = require('amazon-cognito-identity-js');
 global.fetch = require('node-fetch');
+const bodyParser = require('body-parser')
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
 app.set("port", process.env.PORT || 3001);
 
 const AWS_ACESSS_KEY = process.env.aws_access_key;
 const AWS_SECRET_KEY = process.env.aws_secret_key;
+var cors = require('cors')
 
+app.use(cors()) // Use this after the variable declaration
 const AWSConfig = {
   accessKeyId: AWS_ACESSS_KEY,
   secretAccessKey: AWS_SECRET_KEY,
@@ -105,6 +110,7 @@ const createLogins = function(callback) {
   addNewUser(bob);
 
   
+
   app.use('/',require('./routes'))
 
 
@@ -161,6 +167,17 @@ userPool.signUp('username', password, attributeList, null, function(err, result)
     cognitoUser = result.user;
     console.log('user name is ' + cognitoUser.getUsername());
 });
+
+
+cognitoUser.confirmRegistration('123456', true, function(err, result) {
+  if (err) {
+      alert(err);
+      return;
+  }
+  console.log('call result: ' + result);
+});
+
+
 }
 // end sign up
 //confirm user 
@@ -169,16 +186,37 @@ userPool.signUp('username', password, attributeList, null, function(err, result)
 //==
 
 
+// AWS Cognito Sign In
+const signIn = () => {
+  var authenticationData = {
+    Username : 'username',
+    Password : 'password',
+};
+var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
+var poolData = { UserPoolId : 'us-east-1_TcoKGbf7n',
+    ClientId : '4pe2usejqcdmhi0a25jp4b5sh3'
+};
+var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+var userData = {
+    Username : 'username',
+    Pool : userPool
+};
+var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+cognitoUser.authenticateUser(authenticationDetails, {
+    onSuccess: function (result) {
+        var accessToken = result.getAccessToken().getJwtToken();
+        
+        /* Use the idToken for Logins Map when Federating User Pools with identity pools or when passing through an Authorization Header to an API Gateway Authorizer*/
+        var idToken = result.idToken.jwtToken;
+    },
 
+    onFailure: function(err) {
+        alert(err);
+    },
 
-
-
-
-
-
-
+});
+}
  
-
 app.listen(app.get("port"), () => {
   console.log(`Server at: http://localhost:${app.get("port")}/`);
 });
