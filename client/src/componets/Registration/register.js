@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Input, Button } from "semantic-ui-react";
-
+import './register.css'
 class Register extends Component {
   constructor(props) {
     super(props);
@@ -9,6 +9,31 @@ class Register extends Component {
       password: "",
       isValidated: false
     };
+  }
+
+  manualRegisterUser= (data) =>{
+    fetch("/login/manual", {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+      .then(function(res) {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return Promise.reject({
+            status: res.status,
+            statusText: res.statusText
+          });
+        }
+      })
+      .then(function(myJson) {
+        console.log(JSON.stringify(myJson));
+      })
+      .catch(err => console.log("Error, with message:", err));
   }
 
   registerUser = (data) => {
@@ -32,11 +57,14 @@ class Register extends Component {
       })
       .then(function(myJson) {
         console.log(JSON.stringify(myJson));
+        
       })
       .catch(err => console.log("Error, with message:", err));
   };
 
   componentDidMount() {}
+  
+
 
   checkUserInput = () => {
     if (this.state.email === "" || this.state.password === "")
@@ -45,7 +73,7 @@ class Register extends Component {
     console.log("email", this.state.email);
     const userData = {email: this.state.email,
                       password: this.state.password}
-    this.registerUser(userData);
+    this.manualRegisterUser(userData);
   };
   handleEmail = e => {
     let email = e.target.value;
@@ -59,14 +87,19 @@ class Register extends Component {
   render() {
     return (
       <div>
-        <Input onChange={this.handleEmail} placeholder="Email..." />
-        <Input onChange={this.handlePassword} placeholder="Password..." />
-        <Button circular color="facebook" icon="facebook" />
-        <Button circular color="black" icon="github" />
-        <Button circular color="linkedin" icon="linkedin" />
-        <Button onClick={this.checkUserInput}>Sign up</Button>
+        <Input className={'customInput'} onChange={this.handleEmail} placeholder="Email..." />
+        <Input className={'customInput'} onChange={this.handlePassword} placeholder="Password..."/>
+        <div className={'social'}>
+        <Button size={'big'} circular onClick={this.props.FBAuth} color="facebook"  icon="facebook" />
+   
+        <Button size={'big'}circular color="black" icon="github" />
+        <Button size={'big'}circular color="linkedin" icon="linkedin" />
+        </div>
+        <Button size={'big'} className={'customButton'} onClick={this.checkUserInput}>Sign up</Button>
+
       </div>
     );
   }
 }
+
 export default Register;

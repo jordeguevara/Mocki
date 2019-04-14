@@ -1,0 +1,43 @@
+.interviewSessionContainer{
+    width: 90%;
+    height: 750px;
+
+}
+
+.sessionDashboard{
+    color: black;
+    font-size: 15px;
+    width: 90%;
+    height: 325px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    margin-top: 100px;
+    background: #fff;
+
+}
+
+.startSession{
+    width: 90%;
+    height: 100px;
+    margin: 0 auto;
+    display: flex;
+    border-radius: 100px;
+}
+
+.left{
+    flex: 1;
+    height: 100px;
+}
+
+.right{
+    flex: 1;
+    height: 100px;;
+   
+}
+
+.startButton{
+    position: relative;
+    top: 50px;
+    margin-top: -25px
+}
