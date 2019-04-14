@@ -1,0 +1,14 @@
+.customInput{
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.customButton{
+    padding: 1rem;
+    display: block;
+    margin: 0 auto;
+}
+
+.social{
+   padding: 1.5rem;
+}

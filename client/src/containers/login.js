@@ -3,9 +3,17 @@ import ReactDOM from "react-dom";
 import Register from "../componets/Registration/register";
 import Login from "../componets/Login/login";
 import { Button } from "semantic-ui-react";
-// import './App.css';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Redirect,
+  Switch
+} from "react-router-dom";
+import './login.css';
+import Dashboard from "./dashboard";
 
-const cond = false;
+
 class LoginContainer extends Component {
   constructor(props){
     super(props);
@@ -13,10 +21,44 @@ class LoginContainer extends Component {
       isNew : this.props.isNew,
       registerOn: true,
       loginOn : false,
+      redirect: false // TO DO
      } 
+
+    //  this.renderRedirect = this.renderRedirect.bind(this);
   }
 
+  setRedirect = () => {
+    this.setState({
+      redirect: true
+    })
+  }
+  // renderRedirect = () => {
+  //   console.log('redirecting')
+  //     return (<Switch><Redirect to={'/dashboard'} component={Dashboard}> </Redirect> </Switch>)
+  //   }
   
+
+
+
+   FaceBookAuthe = () =>{
+    window.fbAsyncInit = function() {
+      window.FB.init({
+        appId            : '661312257652923',
+        autoLogAppEvents : true,
+        xfbml            : true,
+        version          : 'v3.2'
+      });
+    };
+    console.log('clicked Fb');
+          // Load the SDK asynchronously
+          (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+   }
 
    loginHandler = () =>{
       this.setState({isNew: false, registerOn: false, loginOn: true,})
@@ -29,18 +71,33 @@ class LoginContainer extends Component {
   render() {
     return (
       <div>
-        <Button.Group>
-          <Button onClick={this.registerHandler}   positive={this.state.registerOn}  >SignUp</Button>
-          <Button.Or />
-          <Button onClick={this.loginHandler} postive={this.state.loginOn} >Login</Button>
-        </Button.Group>
-        {this.state.isNew === true ? <Register /> : <Login />}
-        {/* <Login/>
-          <Register/> */}
+        <ToggleContainer 
+        isNew={this.state.isNew}
+        registerHandler={this.registerHandler}
+        loginHandler={this.loginHandler}
+        // redirect={this.renderRedirect}
+          />
+      
       </div>
     );
   }
 }
+
+const ToggleContainer = props => {
+  return (
+    <div className="ToggleContainer">
+      <div className={'toggle'}>
+      <Button.Group>
+          <Button onClick={props.registerHandler} positive={props.isNew} >SignUp</Button>
+          <Button.Or />
+          <Button onClick={props.loginHandler} positive={!props.isNew}>Login</Button>
+        </Button.Group>
+        </div>
+        {props.isNew === true ? <Register /> : <Login />}
+    </div>
+  );
+};
+
 
 ReactDOM.render(<LoginContainer />, document.getElementById("root"));
 

@@ -23,9 +23,14 @@ router.get('/', (req,res)=>{
     //     });
     // }
 
-    res.send({data: 'succes ss'
+    res.send({data: 'success'
     })
 });
+
+
+router.post('/manual', (req,res)=>{
+    res.send({account:'sucesss'});
+})
 
 router.post('/', (req,res)=>{
     // console.log(req);

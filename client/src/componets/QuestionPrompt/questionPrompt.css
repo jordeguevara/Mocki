@@ -1,0 +1,36 @@
+.QuestionPromptContainer{
+    position: relative;
+    top: 45px;
+    background: #fff;
+    width: 840px;
+    height: 500px;
+}
+
+.questionTitle{
+    /* background: red; */
+    padding: 10px;
+    margin: 0 auto;
+    color: black;
+    font-weight: 700;
+}
+
+.questionBody{
+    font-size: 14px;
+    padding: 5px;
+}
+
+p{
+    line-height: 32px;   /* within paragraph */
+    margin-bottom: 30px; /* between paragraphs */
+}
+
+.exampleContainer{
+    background: #f1f1f1;
+    width: 80%;
+    margin: 0 auto;
+}
+
+blockquote{
+    font-size: 14px;
+    padding: 2rem;
+}
