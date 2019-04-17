@@ -1,0 +1,33 @@
+.questionContainer {
+    background: #fff;
+    color: #000;
+    width: 800px;
+    height: 550px;
+    position: relative;
+
+}
+.question{
+    padding: 25px;
+    text-align: left;
+}
+
+.questionNavigation{
+    padding: 20px;
+    text-align: right;
+}
+
+.option{
+    display: block;
+    padding: 25px;
+    text-align: left;
+    font-size: 15px;
+}
+
+.answer{
+    border: 2px solid grey;
+    color: navy;
+    background: transparent;
+}
+.nextQuestionBtn{
+    background: green;
+}

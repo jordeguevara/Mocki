@@ -1,0 +1,25 @@
+{
+    "Questions": [
+      {
+      "question": "What do you know about data structures?",
+      "answers" : [
+        { "a": "Not sure about data structures, I don't know the difference between Arrays and LinkedLists" ,
+          "b": "I am able to explain to others about LinkedList,Arrays,Hash tables and use cases" , 
+          "c": "I can explain basic data structures along with space and time complexities, plus explain how hash tables are implemented along with how collisions work and priority queues ", 
+          "d":"I am kwowledgable of advanced data structures such as B-trees, binomial heaps, AVL trees, Skip lists,etc"
+        }
+        ]
+      },
+      {
+        "question": "What do you know about Algorithms?",
+        "answers" : [
+          { "a": "Not sure about algorithms, I would struggle to find the average value in an array" ,
+            "b": "I know basic sorting, searching, data strucutre traversal and retrival algorithms" , 
+            "c": "I can explain trees, Graphs, simple greedy and divide and conquer algorithms", 
+            "d":" I am able to recognize and code dynamic programming solutions, good knowledge of graph algorithms, good knowledge of numerical computation algorithms, able to identify NP problems,etc"
+          }
+          ]
+        }
+      ]
+      
+   }

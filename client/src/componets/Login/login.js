@@ -7,7 +7,7 @@ class Login extends Component {
         return (
             <div>
               <Input className={'customInput'}placeholder='Email' />
-              <Input className={'customInput'} placeholder='Password' />
+              <Input className={'customInput'} placeholder='Password' type="password" />
               <br/>
               <Button className={'customButton'} >Login</Button>
 
