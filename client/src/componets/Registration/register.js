@@ -87,8 +87,8 @@ class Register extends Component {
   render() {
     return (
       <div>
-        <Input className={'customInput'} onChange={this.handleEmail} placeholder="Email..." />
-        <Input className={'customInput'} onChange={this.handlePassword} placeholder="Password..."/>
+        <Input className={'customInput'} onChange={this.handleEmail} placeholder="Email" />
+        <Input className={'customInput'} onChange={this.handlePassword} placeholder="Password" type="password"/>
         <div className={'social'}>
         <Button size={'big'} circular onClick={this.props.FBAuth} color="facebook"  icon="facebook" />
    

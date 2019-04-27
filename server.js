@@ -1,17 +1,27 @@
 const express = require("express");
 const app = express();
+// var server = require('http').Server(app);
+// var io = require('socket.io')(server);
+
 require("dotenv").config();
 global.fetch = require("node-fetch");
 const bodyParser = require("body-parser");
+
+const cors = require('cors')
+const mongoose = require('mongoose', ()=> console.log('moongose connected'))
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
+
+mongoose.connect(process.env.dbURI, { useNewUrlParser: true }, ()=>console.log('mongose connecteed'))
+
+const passportSetup = require('./passportsetup');
+
 const { createUserTable, createLogins } = require("./db/awsDB");
 const {initalizeApp} = require('./util');
 
 const Pusher = require('pusher');
 
 var cors = require('cors')
-app.use(cors()) 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
 
 const pusher = new Pusher({
   appId: process.env.push_app_id,
@@ -30,9 +40,11 @@ app.post('/message', (req, res) => {
 });
 
 
+app.use(cors()) 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.set("port", process.env.PORT || 3001);
-// initalizeApp();
 
 app.use("/", require("./routes"));
 
