@@ -6,6 +6,7 @@ const app = express();
 require("dotenv").config();
 global.fetch = require("node-fetch");
 const bodyParser = require("body-parser");
+
 const cors = require('cors')
 const mongoose = require('mongoose', ()=> console.log('moongose connected'))
 const http = require('http').Server(app);
@@ -14,17 +15,34 @@ const io = require('socket.io')(http);
 mongoose.connect(process.env.dbURI, { useNewUrlParser: true }, ()=>console.log('mongose connecteed'))
 
 const passportSetup = require('./passportsetup');
+
+const { createUserTable, createLogins } = require("./db/awsDB");
+const {initalizeApp} = require('./util');
+
+const Pusher = require('pusher');
+
+var cors = require('cors')
+
+const pusher = new Pusher({
+  appId: process.env.push_app_id,
+  key: process.env.pusher_key,
+  secret: process.env.pusher_secret,
+  cluster: process.env.pusher_cluster,
+  encrypted: true
+});
+
+app.post('/message', (req, res) => {
+  const payload = req.body;
+  pusher.trigger('my-channel', 'my-event', {
+    "code": payload
+  });
+  res.send(payload)
+});
+
+
 app.use(cors()) 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
-// server.listen(80);
-// io.on('connection', function (socket) {
-//   socket.emit('news', { hello: 'world' });
-//   socket.on('my other event', function (data) {
-//     console.log(data);
-//   });
-// });
 
 app.set("port", process.env.PORT || 3001);
 
