@@ -1,14 +1,12 @@
 import React, { Component } from "react";
 import AceEditor from "react-ace";
-import brace from "brace";
+// import brace from "brace";
 import "./interview.css";
 import QuestionPrompt from "../componets/QuestionPrompt/questionPrompt";
 import axios from "axios";
 import Pusher from "pusher-js";
-
 import "brace/mode/java";
 import "brace/mode/javascript";
-
 import "brace/theme/monokai";
 
 class Interview extends Component {
@@ -21,17 +19,7 @@ class Interview extends Component {
 
     this.handleTextChange = this.handleTextChange.bind(this);
   }
-
   componentDidMount() {
-    const pusher = new Pusher("6b07cbe48cd4b864a86a", {
-      cluster: "us3",
-      encrypted: true
-    });
-    var self = this;
-    var channel = pusher.subscribe("my-channel");
-    channel.bind("my-event", function(data) {
-      self.setState({ initialCode: data.code.code });
-    });
   }
 
   handleKeyPress = event => {
@@ -42,7 +30,18 @@ class Interview extends Component {
   };
 
   handleTextChange(payload) {
+    console.log('payload',payload)
     axios.post("http://localhost:3001/message", { code: payload });
+
+    const pusher = new Pusher("6b07cbe48cd4b864a86a", {
+      cluster: "us3",
+      encrypted: true
+    });
+    var self = this;
+    var channel = pusher.subscribe("my-channel");
+    channel.bind("my-event", function(data) {
+      self.setState({ initialCode: data.code.code });
+    });
   }
   render() {
     return (
@@ -58,7 +57,6 @@ class Interview extends Component {
             // onLoad={this.onLoad}
             onChange={this.handleTextChange}
             onKeyPress={this.handleKeyPress}
-            fontSize={14}
             showPrintMargin={true}
             showGutter={true}
             highlightActiveLine={true}
