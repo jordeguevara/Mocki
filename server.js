@@ -1,26 +1,31 @@
 const express = require("express");
 const app = express();
-// var server = require('http').Server(app);
-// var io = require('socket.io')(server);
 
 require("dotenv").config();
 global.fetch = require("node-fetch");
 const bodyParser = require("body-parser");
 
+const cookieSession = require('cookie-session');
+
 const cors = require('cors')
+app.use(cors()) 
 const mongoose = require('mongoose', ()=> console.log('moongose connected'))
-// const http = require('http').Server(app);
-// const io = require('socket.io')(http);
 
 mongoose.connect(process.env.dbURI, { useNewUrlParser: true }, ()=>console.log('mongose connecteed'))
-
+const passport = require('passport')
 const passportSetup = require('./passportsetup');
 
-// const { createUserTable, createLogins } = require("./db/awsDB");
-// const {initalizeApp} = require('./util');
+const Pusher = require('pusher')
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(cookieSession({
+  maxAge: 24* 60 * 60 * 1000,
+  keys: ['cookieisawesome']
+}))
 
-const Pusher = require('pusher');
-
+//initalize passport
+app.use(passport.initialize());
+app.use(passport.session());
 
 const pusher = new Pusher({
   appId: process.env.push_app_id,
@@ -32,14 +37,13 @@ const pusher = new Pusher({
 
 app.post('/message', (req, res) => {
   const payload = req.body;
+  console.log(payload)
   pusher.trigger('my-channel', 'my-event', {
     "code": payload
   });
   res.send(payload)
 });
 
-
-app.use(cors()) 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
