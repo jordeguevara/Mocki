@@ -7,12 +7,23 @@ const bodyParser = require("body-parser");
 
 const cookieSession = require('cookie-session');
 
-const cors = require('cors')
-app.use(cors()) 
+// const cors = require('cors')
+// var corsOption = {
+//   origin: true,
+//   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+//   credentials: true,
+//   exposedHeaders: ['x-auth-token']
+// };
+// app.use(cors());
+const passport = require('passport')
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 const mongoose = require('mongoose', ()=> console.log('moongose connected'))
 
 mongoose.connect(process.env.dbURI, { useNewUrlParser: true }, ()=>console.log('mongose connecteed'))
-const passport = require('passport')
+
 const passportSetup = require('./passportsetup');
 
 const Pusher = require('pusher')
@@ -22,10 +33,7 @@ app.use(cookieSession({
   maxAge: 24* 60 * 60 * 1000,
   keys: ['cookieisawesome']
 }))
-app.use('')
-//initalize passport
-app.use(passport.initialize());
-app.use(passport.session());
+
 
 const pusher = new Pusher({
   appId: process.env.push_app_id,

@@ -13,19 +13,21 @@ class Register extends Component {
   }
 
   handleGoogleAuth = () => {
-    console.log('pressing button')
-    fetch("http://localhost:3001/auth/google", 
-    {
+    fetch("/auth/google", {
       method: 'GET',
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin' :'*'
       }
-    }
+    }).then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}  
+  
+  handleLocalAuth = (userData)=> {
 
-
-  )
   }
 
   manualRegisterUser= (data) =>{
@@ -91,6 +93,7 @@ class Register extends Component {
     const userData = {email: this.state.email,
                       password: this.state.password}
     this.manualRegisterUser(userData);
+    this.handleLocalAuth(userData)
   };
   handleEmail = e => {
     let email = e.target.value;
