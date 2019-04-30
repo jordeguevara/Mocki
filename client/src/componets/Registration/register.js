@@ -9,6 +9,23 @@ class Register extends Component {
       password: "",
       isValidated: false
     };
+    this.handleGoogleAuth = this.handleGoogleAuth.bind(this);
+  }
+
+  handleGoogleAuth = () => {
+    console.log('pressing button')
+    fetch("http://localhost:3001/auth/google", 
+    {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+    }
+
+
+  )
   }
 
   manualRegisterUser= (data) =>{
@@ -90,7 +107,7 @@ class Register extends Component {
         <Input className={'customInput'} onChange={this.handleEmail} placeholder="Email" />
         <Input className={'customInput'} onChange={this.handlePassword} placeholder="Password" type="password"/>
         <div className={'social'}>
-        <Button size={'big'} circular onClick={this.props.FBAuth} color="facebook"  icon="facebook" />
+        <Button size={'big'} circular onClick={this.handleGoogleAuth} color="red"  icon="google" />
    
         <Button size={'big'}circular color="black" icon="github" />
         <Button size={'big'}circular color="linkedin" icon="linkedin" />
