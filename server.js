@@ -1,39 +1,41 @@
 const express = require("express");
 const app = express();
-
 require("dotenv").config();
 global.fetch = require("node-fetch");
 const bodyParser = require("body-parser");
 
-const cookieSession = require('cookie-session');
+const cookieSession = require("cookie-session");
 
-// const cors = require('cors')
-// var corsOption = {
-//   origin: true,
-//   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-//   credentials: true,
-//   exposedHeaders: ['x-auth-token']
+const cors = require("cors");
+
+// const corsOptions = {
+//   origin: [process.env.URL, "http://localhost:3000"]
 // };
+
 // app.use(cors());
-const passport = require('passport')
+// app.options("*", cors(corsOptions));
+
+const passport = require("passport");
 app.use(passport.initialize());
 app.use(passport.session());
 
+const mongoose = require("mongoose", () => console.log("moongose connected"));
 
-const mongoose = require('mongoose', ()=> console.log('moongose connected'))
+mongoose.connect(process.env.dbURI, { useNewUrlParser: true }, () =>
+  console.log("mongose connecteed")
+);
 
-mongoose.connect(process.env.dbURI, { useNewUrlParser: true }, ()=>console.log('mongose connecteed'))
+const passportSetup = require("./passportsetup");
 
-const passportSetup = require('./passportsetup');
-
-const Pusher = require('pusher')
+const Pusher = require("pusher");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(cookieSession({
-  maxAge: 24* 60 * 60 * 1000,
-  keys: ['cookieisawesome']
-}))
-
+app.use(
+  cookieSession({
+    maxAge: 24 * 60 * 60 * 1000,
+    keys: ["cookieisawesome"]
+  })
+);
 
 const pusher = new Pusher({
   appId: process.env.push_app_id,
@@ -43,13 +45,13 @@ const pusher = new Pusher({
   encrypted: true
 });
 
-app.post('/message', (req, res) => {
+app.post("/message", (req, res) => {
   const payload = req.body;
-  console.log(payload)
-  pusher.trigger('my-channel', 'my-event', {
-    "code": payload
+  console.log(payload);
+  pusher.trigger("my-channel", "my-event", {
+    code: payload
   });
-  res.send(payload)
+  res.send(payload);
 });
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -57,6 +59,8 @@ app.use(bodyParser.json());
 
 app.set("port", process.env.PORT || 3001);
 
+app.options("/google", cors());
+app.get("/google", passport.authenticate("google", { scope: ["profile"] }));
 app.use("/", require("./routes"));
 
 app.listen(app.get("port"), () => {
