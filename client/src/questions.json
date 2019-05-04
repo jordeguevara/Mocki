@@ -1,25 +1,48 @@
 {
-    "Questions": [
-      {
-      "question": "What do you know about data structures?",
-      "answers" : [
-        { "a": "Not sure about data structures, I don't know the difference between Arrays and LinkedLists" ,
-          "b": "I am able to explain to others about LinkedList,Arrays,Hash tables and use cases" , 
-          "c": "I can explain basic data structures along with space and time complexities, plus explain how hash tables are implemented along with how collisions work and priority queues ", 
-          "d":"I am kwowledgable of advanced data structures such as B-trees, binomial heaps, AVL trees, Skip lists,etc"
-        }
-        ]
-      },
-      {
-        "question": "What do you know about Algorithms?",
-        "answers" : [
-          { "a": "Not sure about algorithms, I would struggle to find the average value in an array" ,
-            "b": "I know basic sorting, searching, data strucutre traversal and retrival algorithms" , 
-            "c": "I can explain trees, Graphs, simple greedy and divide and conquer algorithms", 
-            "d":" I am able to recognize and code dynamic programming solutions, good knowledge of graph algorithms, good knowledge of numerical computation algorithms, able to identify NP problems,etc"
-          }
-          ]
+  "Questions": [
+    {
+      "question": " What do you know about data structures?",
+      "answers": [
+        {
+          "a": "Not sure about data structures, I don't know the difference between Arrays and LinkedLists",
+          "b": "I am able to explain to others about LinkedList,Arrays,Hash tables and use cases",
+          "c": "I can explain basic data structures along with space and time complexities, plus explain how hash tables are implemented along with how collisions work and priority queues ",
+          "d": "I am kwowledgable of advanced data structures such as B-trees, binomial heaps, AVL trees, Skip lists,etc"
         }
       ]
-      
-   }
+    },
+    {
+      "question": " What do you know about Algorithms?",
+      "answers": [
+        {
+          "a": "Not sure about algorithms, I would struggle to find the average value in an array",
+          "b": "I know basic sorting, searching, data strucutre traversal and retrival algorithms",
+          "c": "I can explain trees, Graphs, simple greedy and divide and conquer algorithms",
+          "d": " I am able to recognize and code dynamic programming solutions, good knowledge of graph algorithms, good knowledge of numerical computation algorithms, able to identify NP problems,etc"
+        }
+      ]
+    },
+    {
+      "question": " What do you know about System programming",
+      "answers": [
+        {
+          "a": "Not sure what what a compiler, linker or interpreter is",
+          "b": "I have basic understanding of compilers, linker and interpreters, and understand what assembly code is and how things work at the hardware level. Some knowledge of virtual memory and paging",
+          "c": "I understand kernel mode vs. user mode, multi-threading, synchronization primitives and how they're implemented, able to read assembly code. Understands how networks work, understanding of network protocols and socket level programming.",
+          "d": " I understand the entire programming stack, hardware (CPU + Memory + Cache + Interrupts + microcode), binary code, assembly, static and dynamic linking, compilation, interpretation, JIT compilation, garbage collection, heap, stack, memory addressing."
+        }
+      ]
+    },
+    {
+      "question": " How many languages do you have professional experience with?",
+      "answers": [
+        {
+          "a": "No professional exerience yet",
+          "b": "Imperative, Object-Oriented and declarative (SQL), added bonus if they understand static vs dynamic typing, weak vs strong typing and static inferred types",
+          "c": "Functional, added bonus if they understand lazy evaluation, currying, continuations",
+          "d": "Concurrent (Erlang, Oz) and Logic (Prolog)"
+        }
+      ]
+    }
+  ]
+}
