@@ -97,4 +97,25 @@ class Dashboard extends Component {
   }
 }
 
+// function Lobby() {
+
+//   this.lobby = new HashMap();
+
+//   addUser(userId){
+
+//   }
+
+//   removeUser(){
+
+//   }
+
+//   matchUsers(){
+
+//   }
+
+//   updateUsers(){
+
+//   }
+// }
+
 export default Dashboard;
