@@ -12,7 +12,7 @@ const cors = require("cors");
 //   origin: [process.env.URL, "http://localhost:3000"]
 // };
 
-// app.use(cors());
+app.use(cors());
 // app.options("*", cors(corsOptions));
 
 const passport = require("passport");
@@ -60,7 +60,16 @@ app.use(bodyParser.json());
 app.set("port", process.env.PORT || 3001);
 
 app.options("/google", cors());
-app.get("/google", passport.authenticate("google", { scope: ["profile"] }));
+app.get(
+  "/google",
+  passport.authenticate("google", { scope: ["profile"] }),
+  (req, res) => {
+    console.log(req.method);
+    if (req.method === "OPTIONS") {
+      req.statusCode(200);
+    }
+  }
+);
 app.use("/", require("./routes"));
 
 app.listen(app.get("port"), () => {

@@ -1,0 +1,14 @@
+.feedbackContainer {
+  background: #fff;
+  color: #000;
+  width: 600px;
+  height: 500px;
+  padding: 20px;
+  text-align: left;
+}
+
+.surveyBtn {
+  /* position: relative;
+  left: 50%;
+  margin-left: -43px; */
+}

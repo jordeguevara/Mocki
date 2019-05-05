@@ -20,9 +20,15 @@ class Register extends Component {
 
   handleGoogleAuth = () => {
     fetch("/google", {
+      credentials: "include",
       // mode: "cors",
       // credentials: "omit",
-      // redirect: "follow"
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Request-Headers": "*",
+        "Access-Control-Request-Method": "*"
+      },
+      redirect: "follow"
     })
       .then(function(response) {
         console.log(response);
