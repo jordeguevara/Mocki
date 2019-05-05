@@ -14,7 +14,6 @@ import userPhoto from "../assets/icon.png";
 let data = require("../questions.json");
 console.log(data.Questions[0].answers[0]);
 
-let level = 1;
 const ConfirmationModal = props => (
   <Modal trigger={props.trigger}>
     <Modal.Header>Confirmation</Modal.Header>
@@ -29,7 +28,7 @@ const ConfirmationModal = props => (
             lower than expected but this will help you learn with other people
             at a similar experience level. Best of luck!
           </p>
-          <p>Current level {level} </p>
+          <p>Current level {props.level} </p>
           <button onClick={props.clickMethod} className={"submitBtn"}>
             Continue
           </button>
@@ -45,12 +44,14 @@ class FirstTimeUser extends Component {
     this.state = {
       count: 0,
       quiz: [],
-      showModal: false
+      showModal: false,
+      score: 0
     };
 
     this.handleNextQuestion = this.handleNextQuestion.bind(this);
     this.handleDashBoardRedirect = this.handleDashBoardRedirect.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.convertLettersToNumbers = this.convertLettersToNumbers.bind(this);
   }
 
   handleNextQuestion = () => {
@@ -68,19 +69,61 @@ class FirstTimeUser extends Component {
     arr[this.state.count] = event.target.innerHTML;
     this.setState({ quiz: arr });
 
-    console.log(this.state);
-    console.log(data.Questions.length);
-
-    //TO DO convert Letters to number, take average and add it to USER Model as Level then redirect to dashboard
+    //TO DO add it to USER Model
     // and remove firstTime user
   };
 
   handleSubmit = () => {
+    this.calculateScore();
     this.setState({ showModal: true });
   };
   handleDashBoardRedirect = () => {
     console.log("clicked redirect");
     window.location = "/dashboard";
+  };
+
+  weigh = arr => {
+    //if more questions add it manually
+    // TO DO: Automate this
+    arr[0] = 1.5 * arr[0]; // first question weights a lot
+    arr[1] = 1.25 * arr[1];
+    arr[2] = 1.15 * arr[2];
+    arr[3] = 1.1 * arr[3]; // last question not of big importance
+    return arr;
+  };
+
+  calculateScore = () => {
+    let arr = [...this.state.quiz];
+
+    for (let i = 0; i < arr.length; i++) {
+      arr[i] = this.convertLettersToNumbers(arr[i]);
+    }
+    //weigh the updated arr
+    arr = this.weigh(arr);
+    const score = arr.reduce((acc, val) => (acc += val), 0); //calcuate score from arr
+    let level = Math.floor(score / arr.length);
+    this.setState({ quiz: arr, score: score, level: level });
+  };
+
+  convertLettersToNumbers = value => {
+    switch (value) {
+      case "A":
+        value = 1;
+        break;
+      case "B":
+        value = 2;
+        break;
+      case "C":
+        value = 3;
+        break;
+      case "D":
+        value = 4;
+        break;
+      default:
+        value = 0;
+    }
+
+    return value;
   };
 
   render() {
@@ -139,6 +182,7 @@ class FirstTimeUser extends Component {
         <div className="questionNavigation">{nextQuestionBtn}</div>
         {form}
         <ConfirmationModal
+          level={this.state.level}
           clickMethod={this.handleDashBoardRedirect}
           trigger={submitBtn}
           open={this.state.showModal}
