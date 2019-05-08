@@ -1,28 +1,31 @@
 import React, { Component } from "react";
 import { Input, Button } from "semantic-ui-react";
 import "./register.css";
-import { Redirect } from "react-router-dom";
+import { Redirect, Switch, Route } from "react-router-dom";
+import FirstTimeUser from "../../containers/firstTime";
+import { stat } from "fs";
 class Register extends Component {
   constructor(props) {
     super(props);
+    console.log(" r props", props);
     this.state = {
       email: "",
       password: "",
-      isValidated: false,
       redirect: false,
       hiddenErrorMessage: true,
       firstTimeUser: false
     };
+
+    console.log("cdcdc", this.props);
     this.handleGoogleAuth = this.handleGoogleAuth.bind(this);
     this.handleSignUp = this.handleSignUp.bind(this);
+    // this.handleUserCred = this.handleUserCred.bind(this);
     // this.handleRedirect = this.handleRedirect.bind(this);
   }
 
   handleGoogleAuth = () => {
     fetch("/google", {
       credentials: "include",
-      // mode: "cors",
-      // credentials: "omit",
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Request-Headers": "*",
@@ -49,8 +52,8 @@ class Register extends Component {
   //   })
   // }
 
-  handleSignUp = userData => {
-    fetch("/auth/signUp", {
+  handleSignUp = async userData => {
+    await fetch("/auth/signUp", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -60,12 +63,21 @@ class Register extends Component {
     })
       .then(response => response.text())
       .then(text => {
+        let res = JSON.parse(text);
+        let user = "";
         console.log(JSON.parse(text));
-        console.log("text.message === S", text.message === "S");
-        if (true) {
-          this.setState({ redirect: true, firstTimeUser: true });
+        console.log("text.message === S", res.message === "S");
+        if (res.message === "S") {
+          this.setState({
+            redirect: true,
+            firstTimeUser: true,
+            user: res.user
+          });
+          this.props.handleAuth();
+          this.props.handleUserID(res.user);
         }
       });
+    console.log(this.props);
   };
 
   manualRegisterUser = data => {
@@ -121,10 +133,10 @@ class Register extends Component {
   componentDidMount() {}
 
   checkUserInput = () => {
-    if (this.state.email === "" || this.state.password === "")
+    if (this.state.email === "" || this.state.password === "") {
       console.log("cant be blank");
-    console.log("pass", this.state.password);
-    console.log("email", this.state.email);
+      // TO DO create alert to warn user ie modal
+    }
     if (validateEmail(this.state.email)) {
       const userData = {
         email: this.state.email,
@@ -153,10 +165,21 @@ class Register extends Component {
   render() {
     let redirect = null;
     if (this.state.redirect && this.state.firstTimeUser)
-      redirect = <Redirect to="/firstTime" />;
+      redirect = (
+        <Redirect to="/firstTime" />
+        // <Route
+        //   path="/firstTime"
+        //   render={props => (
+        //     <FirstTimeUser
+        //       userId={this.state.userId}
+        //       isAuthenticated={this.state.isAuthenticated}
+        //     />
+        //   )}
+        // />
+      );
     return (
       <div>
-        {redirect}s
+        {redirect}
         <Input
           className={"customInput"}
           onChange={this.handleEmail}
