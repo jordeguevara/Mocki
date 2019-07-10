@@ -62,17 +62,16 @@ class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userId: ""
+      userId: "",
+      isReady: false,
+      reviewCompleted: false
     };
     this.handleMatching = this.handleMatching.bind(this);
     this.lobby = new Lobby();
-
-    console.log("dash", props);
   }
 
   handleMatching = () => {
     this.lobby.matchOnClick();
-    // window.location = "/interview";
   };
 
   render() {
@@ -142,12 +141,10 @@ class Lobby {
 
   matchOnClick() {
     let matchingInterval = setInterval(this.matchUser, 5000);
-
     setTimeout(stopMatching(matchingInterval), 30000);
 
     function stopMatching(interval) {
       clearInterval(interval);
-      // console.log("closed it");
     }
   }
 
@@ -166,17 +163,7 @@ class Lobby {
       )
         window.location = `/interview/${matchedUsers.interviewID}`;
     });
-
-    //reroute to channel ie in broswer /interview/id:
   }
 }
-
-//   matchUsers(){
-//    //pick user randomly and match it to another user
-//    // every 10 seconds pick a user and  and match it to another one
-//    // if noone in hashmap stop // do this everytime some hits endpoint
-//    //if no match but there is people increase range
-//    //
-//   }
 
 export default Dashboard;

@@ -20,11 +20,9 @@ const signUpUserService = async userData => {
       .save()
       .then(newUser => {
         user = newUser._id;
-        console.log("userin:", user);
         return user;
       });
   }
-  console.log("userout:", user);
   return user;
 };
 
@@ -33,10 +31,8 @@ const loginAuthenticatorService = async userData => {
     let isFound = await User.findOne({ username: userData.email }).then(
       user => {
         if (user) {
-          console.log("found user");
           return true;
         } else {
-          console.log("didnt find user");
           return false;
         }
       }
@@ -70,8 +66,9 @@ router.get(
 );
 
 router.post("/signUp", async (req, res) => {
+  console.log("/auth/signUp", req.body);
   let newUser = await signUpUserService(req.body);
-  console.log(typeof newUser);
+  console.log("newUser", newUser);
   res.send({ message: "S", user: newUser });
 });
 

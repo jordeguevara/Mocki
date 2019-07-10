@@ -7,7 +7,6 @@ const LobbyService = async map => {
   let status;
   await Lobby.findOne({ name: "global" }).then(lobby => {
     if (lobby) {
-      console.log("exisits");
       status = true;
     } else {
       let arr = [];
@@ -75,22 +74,13 @@ const getCurrentLevel = async level => {
 
 router.get("/available", (req, res) => {});
 
-const openInterveiweSessionService = () => {
-  //creat a new pusher channel and redirect both users to it
-};
-
 router.get("/createInterview", (req, res) => {});
 
 const addUsersToLobbyService = user => {
-  // console.log("user", user.level);
-  // let obj = JSON.parse(user);
   let level = 1;
   Lobby.findOneAndUpdate({ name: "global" }, { $push: { lobby: level } })
     .then(global => {
-      // console.log(global.lobby[0]);
-      // global.lobby[0].push(1);
-      // console.log(global.lobby[0]);
-      // global.save(done);
+      openInterveiweSessionService();
     })
     .catch(error => {
       console.log(error);

@@ -37,28 +37,6 @@ class LoginContainer extends Component {
   //     return (<Switch><Redirect to={'/dashboard'} component={Dashboard}> </Redirect> </Switch>)
   //   }
 
-  FaceBookAuthe = () => {
-    window.fbAsyncInit = function() {
-      window.FB.init({
-        appId: "661312257652923",
-        autoLogAppEvents: true,
-        xfbml: true,
-        version: "v3.2"
-      });
-    };
-    console.log("clicked Fb");
-    // Load the SDK asynchronously
-    (function(d, s, id) {
-      var js,
-        fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) return;
-      js = d.createElement(s);
-      js.id = id;
-      js.src = "//connect.facebook.net/en_US/sdk.js";
-      fjs.parentNode.insertBefore(js, fjs);
-    })(document, "script", "facebook-jssdk");
-  };
-
   loginHandler = () => {
     this.setState({ isNew: false, registerOn: false, loginOn: true });
     console.log(this.state);
@@ -74,10 +52,10 @@ class LoginContainer extends Component {
           isNew={this.state.isNew}
           registerHandler={this.registerHandler}
           loginHandler={this.loginHandler}
-          handleAuth={this.props.handleAuth}
-          handleUserID={this.props.handleUserID}
-          userId={this.props.userId}
-          isAuthenticated={this.props.isAuthenticated}
+          // handleAuth={this.props.handleAuth}
+          // handleUserID={this.props.handleUserID}
+          // userId={this.props.userId}
+          // isAuthenticated={this.props.isAuthenticated}
 
           // redirect={this.renderRedirect}
         />

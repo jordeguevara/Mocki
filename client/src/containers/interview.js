@@ -19,8 +19,7 @@ class Interview extends Component {
 
     this.handleTextChange = this.handleTextChange.bind(this);
   }
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
   handleKeyPress = event => {
     console.log("event", event);
@@ -30,7 +29,7 @@ class Interview extends Component {
   };
 
   handleTextChange(payload) {
-    console.log('payload',payload)
+    console.log("payload", payload);
     axios.post("http://localhost:3001/message", { code: payload });
 
     const pusher = new Pusher("6b07cbe48cd4b864a86a", {
