@@ -1,28 +1,27 @@
 import React, { Component } from "react";
 import { Input, Button } from "semantic-ui-react";
 import "./register.css";
-import { Redirect } from "react-router-dom";
+import { Route, Link } from "react-router-dom";
+import { connect } from "react-redux";
+import FirstTimeUser from "../../containers/firstTime";
+
 class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
       email: "",
       password: "",
-      isValidated: false,
       redirect: false,
-      hiddenErrorMessage: true,
-      firstTimeUser: false
+      hiddenErrorMessage: true
     };
     this.handleGoogleAuth = this.handleGoogleAuth.bind(this);
     this.handleSignUp = this.handleSignUp.bind(this);
-    // this.handleRedirect = this.handleRedirect.bind(this);
+    this.checkUserInput = this.checkUserInput.bind(this);
   }
 
   handleGoogleAuth = () => {
     fetch("/google", {
       credentials: "include",
-      // mode: "cors",
-      // credentials: "omit",
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Request-Headers": "*",
@@ -30,14 +29,14 @@ class Register extends Component {
       },
       redirect: "follow"
     })
-      .then(function(response) {
+      .then(response => {
         console.log(response);
       })
-      .catch(function(error) {
+      .catch(error => {
         console.log(error);
       });
   };
-
+  // TO DO: Implement Passport.js Local Strategy
   // handleLocalAuth = (userData)=> {
   //   fetch('/auth/login',{
   //     method: 'POST',
@@ -60,11 +59,22 @@ class Register extends Component {
     })
       .then(response => response.text())
       .then(text => {
-        console.log(JSON.parse(text));
-        console.log("text.message === S", text.message === "S");
-        if (true) {
-          this.setState({ redirect: true, firstTimeUser: true });
+        const res = JSON.parse(text);
+        // let user = "";
+        // console.log(JSON.parse(text));
+        // console.log("text.message === S", res.message === "S");
+        if (res.message === "S") {
+          this.setState({
+            redirect: true,
+            firstTimeUser: true
+            // user: res.user
+          });
+          // this.props.handleAuth();
+          // this.props.handleUserID(res.user);
         }
+      })
+      .catch(err => {
+        console.log("err during execution : ", err);
       });
   };
 
@@ -77,17 +87,16 @@ class Register extends Component {
       },
       body: JSON.stringify(data)
     })
-      .then(function(res) {
+      .then(res => {
         if (res.ok) {
           return res.json();
-        } else {
-          return Promise.reject({
-            status: res.status,
-            statusText: res.statusText
-          });
         }
+        return Promise.reject({
+          status: res.status,
+          statusText: res.statusText
+        });
       })
-      .then(function(myJson) {
+      .then(myJson => {
         console.log(JSON.stringify(myJson));
       })
       .catch(err => console.log("Error, with message:", err));
@@ -102,100 +111,130 @@ class Register extends Component {
       },
       body: JSON.stringify(data)
     })
-      .then(function(res) {
+      .then(res => {
         if (res.ok) {
           return res.json();
-        } else {
-          return Promise.reject({
-            status: res.status,
-            statusText: res.statusText
-          });
         }
+        return Promise.reject({
+          status: res.status,
+          statusText: res.statusText
+        });
       })
-      .then(function(myJson) {
+      .then(myJson => {
         console.log(JSON.stringify(myJson));
       })
       .catch(err => console.log("Error, with message:", err));
   };
 
-  componentDidMount() {}
-
   checkUserInput = () => {
-    if (this.state.email === "" || this.state.password === "")
+    console.log("clicked");
+    if (this.state.email === "" || this.state.password === "") {
       console.log("cant be blank");
-    console.log("pass", this.state.password);
-    console.log("email", this.state.email);
+      // TO DO create alert to warn user ie modal
+    }
     if (validateEmail(this.state.email)) {
       const userData = {
         email: this.state.email,
         password: this.state.password
       };
+
       this.handleSignUp(userData);
     } else {
       this.setState({ hiddenErrorMessage: false });
     }
+    this.props.registerUser(1);
     // this.manualRegisterUser(userData);
 
     function validateEmail(email) {
-      var regEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      const regEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return regEx.test(String(email).toLowerCase());
     }
   };
+
   handleEmail = e => {
-    let email = e.target.value;
-    this.setState({ email: email });
+    const email = e.target.value;
+    this.setState({ email });
   };
+
   handlePassword = e => {
-    let password = e.target.value;
-    this.setState({ password: password });
+    const password = e.target.value;
+    this.setState({ password });
   };
 
   render() {
-    let redirect = null;
-    if (this.state.redirect && this.state.firstTimeUser)
-      redirect = <Redirect to="/firstTime" />;
+    console.log("this.props", this.props);
+    // let redirect = null;
+    // if (this.state.redirect && this.state.firstTimeUser) {
+    //   redirect = (
+    //     <div>
+    //       <Link to="/firstTime"> About</Link>
+    //       <Route
+    //         path="/firstTime"
+    //         render={props => (
+    //           <FirstTimeUser
+    //       userId={this.state.userId}
+    //       isAuthenticated={this.state.isAuthenticated}
+    //     />
+    //         )}
+    //       />
+    //     </div>
+    //   );
+    // }
     return (
+      // eslint-disable-next-line react/jsx-filename-extension
       <div>
-        {redirect}s
+        {/* {redirect} */}
         <Input
-          className={"customInput"}
+          className="customInput"
           onChange={this.handleEmail}
           placeholder="Email"
         />
         <Input
-          className={"customInput"}
+          className="customInput"
           onChange={this.handlePassword}
           placeholder="Password"
           type="password"
         />
-        <div className={"social"}>
+        {/* <div className="social">
           <Button
-            size={"big"}
+            size="big"
             circular
             onClick={this.handleGoogleAuth}
             color="red"
             icon="google"
           />
 
-          <Button size={"big"} circular color="black" icon="github" />
-          <Button size={"big"} circular color="linkedin" icon="linkedin" />
-        </div>
+         <Button size="big" circular color="black" icon="github" />
+          <Button size="big" circular color="linkedin" icon="linkedin" />
+        </div> */}
         <Button
-          size={"big"}
-          className={"customButton"}
+          size="big"
+          className="customButton"
           onClick={this.checkUserInput}
         >
           Sign up
         </Button>
         <p>
           <span hidden={this.state.hiddenErrorMessage}>
-            {" "}
             Invalid Email/Passoword
-          </span>{" "}
+          </span>
         </p>
       </div>
     );
   }
 }
 
-export default Register;
+const mapStateToProps = (state, ownProps) => ({
+  ...state
+});
+
+const mapDisptachToProps = dispatch => ({
+  registerUser: id => {
+    dispatch({ type: "SIGN_IN" });
+  }
+});
+
+export default connect(
+  mapStateToProps,
+  mapDisptachToProps
+)(Register);

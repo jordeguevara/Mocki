@@ -3,26 +3,27 @@ const router = express.Router();
 const passport = require("passport");
 const User = require("../models/user-model");
 
-const signUpUserService = userData => {
-  User.findOne({ username: userData.email }).then(currentUser => {
-    if (currentUser) {
-      // already has user
-      console.log("user is: ", currentUser);
-      // done(null, currentUser);
-    } else {
-      //if not create new User
-      new User({
-        username: userData.email,
-        password: userData.password,
-        level: null,
-        firstTimeUser: true
-      })
-        .save()
-        .then(newUser => {
-          return newUser;
-        });
-    }
-  });
+const signUpUserService = async userData => {
+  let user;
+  let result = await User.findOne({ username: userData.email });
+  if (result) {
+    // already has user
+    console.log("user is: ", result);
+    // done(null, currentUser);
+  } else {
+    let newUser = await new User({
+      username: userData.email,
+      password: userData.password,
+      level: null,
+      firstTimeUser: true
+    })
+      .save()
+      .then(newUser => {
+        user = newUser._id;
+        return user;
+      });
+  }
+  return user;
 };
 
 const loginAuthenticatorService = async userData => {
@@ -30,10 +31,8 @@ const loginAuthenticatorService = async userData => {
     let isFound = await User.findOne({ username: userData.email }).then(
       user => {
         if (user) {
-          console.log("found user");
           return true;
         } else {
-          console.log("didnt find user");
           return false;
         }
       }
@@ -66,9 +65,11 @@ router.get(
   })
 );
 
-router.post("/signUp", (req, res) => {
-  let newUser = signUpUserService(req.body);
-  res.send({ message: "S" });
+router.post("/signUp", async (req, res) => {
+  console.log("/auth/signUp", req.body);
+  let newUser = await signUpUserService(req.body);
+  console.log("newUser", newUser);
+  res.send({ message: "S", user: newUser });
 });
 
 router.get(

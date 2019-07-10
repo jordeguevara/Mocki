@@ -53,6 +53,13 @@ class FirstTimeUser extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.convertLettersToNumbers = this.convertLettersToNumbers.bind(this);
   }
+  // Saves level to DB
+  handleLevelService = () => {
+    fetch("/updateLevel", {
+      method: "PUT",
+      body: JSON.stringify({ level: this.state.level })
+    });
+  };
 
   handleNextQuestion = () => {
     this.setState({ count: this.state.count + 1 });

@@ -14,7 +14,8 @@ const cors = require("cors");
 
 app.use(cors());
 // app.options("*", cors(corsOptions));
-
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 const passport = require("passport");
 app.use(passport.initialize());
 app.use(passport.session());
@@ -29,7 +30,6 @@ const passportSetup = require("./passportsetup");
 
 const Pusher = require("pusher");
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
 app.use(
   cookieSession({
     maxAge: 24 * 60 * 60 * 1000,
@@ -53,9 +53,6 @@ app.post("/message", (req, res) => {
   });
   res.send(payload);
 });
-
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
 
 app.set("port", process.env.PORT || 3001);
 

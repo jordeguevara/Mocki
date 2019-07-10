@@ -32,6 +32,14 @@ class QuestionPrompt extends Component {
     // makes call to backend to close channel
     window.location = "/feedback";
     console.log("clicked");
+    fetch("/survey", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: this.mapToJson(this.lobby)
+    });
     this.setState({ completed: true });
   }
   render() {
