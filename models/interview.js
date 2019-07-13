@@ -1,5 +1,7 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+// @flow
+const mongoose = require('mongoose');
+
+const { Schema } = mongoose;
 
 const interviewSchema = new Schema({
   interviewID: String,
@@ -10,6 +12,6 @@ const interviewSchema = new Schema({
 
 });
 
-const Interview = mongoose.model("interview", userSchema);
+const Interview = mongoose.model('interview', interviewSchema);
 
 module.exports = Interview;

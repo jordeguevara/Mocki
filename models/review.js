@@ -1,5 +1,7 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+// @flow
+const mongoose = require('mongoose');
+
+const { Schema } = mongoose;
 
 const reviewSchema = new Schema({
   interviewID: String,
@@ -8,9 +10,9 @@ const reviewSchema = new Schema({
   technicalCommunincation: Number,
   strengths: String,
   improvement: String,
-  interviewerRating: Number
+  interviewerRating: Number,
 });
 
-const Review = mongoose.model("review", userSchema);
+const Review = mongoose.model('review', reviewSchema);
 
 module.exports = Review;

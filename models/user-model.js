@@ -1,5 +1,7 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+// @flow
+const mongoose = require('mongoose');
+
+const { Schema } = mongoose;
 
 const userSchema = new Schema({
   username: String,
@@ -8,9 +10,9 @@ const userSchema = new Schema({
   GitHubID: String,
   password: String,
   level: Number,
-  firstTimeUser: Boolean
+  firstTimeUser: Boolean,
 });
 
-const User = mongoose.model("user", userSchema);
+const User = mongoose.model('user', userSchema);
 
 module.exports = User;

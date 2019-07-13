@@ -1,13 +1,15 @@
-const express = require("express");
+// @flow
+const express = require('express');
+
 const router = express.Router();
 
-const Interview = require("../models/Interview");
+const Interview = require('../models/interview');
 
-const InterviewService = () => {
+const InterviewService = (id) => {
   Interview.findOne({ InterviewId: id }).then(() => {});
 };
 
-router.post("/interview", (req, res) => {
+router.post('/interview', (req, res) => {
   InterviewService();
   res.send({ id: 1 });
 });

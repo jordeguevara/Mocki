@@ -1,24 +1,26 @@
-const express = require("express");
-const router = express.Router();
-const passport = require("passport");
-const User = require("../models/user-model");
+// @flow
+const express = require('express');
 
-const signUpUserService = async userData => {
+const router = express.Router();
+const passport = require('passport');
+const User = require('../models/user-model');
+
+const signUpUserService = async (userData) => {
   let user;
-  let result = await User.findOne({ username: userData.email });
+  const result = await User.findOne({ username: userData.email });
   if (result) {
     // already has user
-    console.log("user is: ", result);
+    console.log('user is: ', result);
     // done(null, currentUser);
   } else {
-    let newUser = await new User({
+    const newUser = await new User({
       username: userData.email,
       password: userData.password,
       level: null,
-      firstTimeUser: true
+      firstTimeUser: true,
     })
       .save()
-      .then(newUser => {
+      .then((newUser) => {
         user = newUser._id;
         return user;
       });
@@ -26,64 +28,63 @@ const signUpUserService = async userData => {
   return user;
 };
 
-const loginAuthenticatorService = async userData => {
+const loginAuthenticatorService = async (userData) => {
   const answer = async () => {
-    let isFound = await User.findOne({ username: userData.email }).then(
-      user => {
+    const isFound = await User.findOne({ username: userData.email }).then(
+      (user) => {
         if (user) {
           return true;
-        } else {
-          return false;
         }
-      }
+        return false;
+      },
     );
     return isFound;
   };
-  let ans = await answer();
+  const ans = await answer();
   return ans;
 };
 
-router.get("/logout", (req, res) => {
+router.get('/logout', (req, res) => {
   req.logout();
-  res.status(301).redirect("http://localhost:3000/login");
+  res.status(301).redirect('http://localhost:3000/login');
 });
 
-router.post("/login", async (req, res) => {
+router.post('/login', async (req, res) => {
   console.log(req.body);
-  let userStatus = await loginAuthenticatorService(req.body);
-  if (userStatus) res.send({ status: "S" });
-  else res.send({ status: "F" });
+  const userStatus = await loginAuthenticatorService(req.body);
+  if (userStatus) res.send({ status: 'S' });
+  else res.send({ status: 'F' });
 });
 
-router.get("/google", passport.authenticate("google", { scope: ["profile"] }));
+router.get('/google', passport.authenticate('google', { scope: ['profile'] }));
 
 router.get(
-  "/google/success",
-  passport.authenticate("google", {
-    successRedirect: "http://localhost:3000/dashboard",
-    failureRedirect: "http://localhost:3000/login"
-  })
+  '/google/success',
+  passport.authenticate('google', {
+    successRedirect: 'http://localhost:3000/dashboard',
+    failureRedirect: 'http://localhost:3000/login',
+  }),
 );
 
-router.post("/signUp", async (req, res) => {
-  console.log("/auth/signUp", req.body);
-  let newUser = await signUpUserService(req.body);
-  console.log("newUser", newUser);
-  res.send({ message: "S", user: newUser });
+router.post('/signUp', async (req, res) => {
+  console.log('/auth/signUp', req.body);
+  const newUser = await signUpUserService(req.body);
+  console.log('newUser', newUser);
+  res.send({ message: 'S', user: newUser });
 });
 
 router.get(
-  "/auth/github",
-  passport.authenticate("github", { scope: ["user:email"] })
+  '/auth/github',
+  passport.authenticate('github', { scope: ['user:email'] }),
 );
 
 router.get(
-  "/auth/github/callback",
-  passport.authenticate("github", { failureRedirect: "/login" }),
-  function(req, res) {
+  '/auth/github/callback',
+  passport.authenticate('github', { failureRedirect: '/login' }),
+  (req, res) => {
     // Successful authentication, redirect home.
-    res.redirect("/");
-  }
+    res.redirect('/');
+  },
 );
 
 module.exports = router;
