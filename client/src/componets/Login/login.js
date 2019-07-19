@@ -1,6 +1,19 @@
+// @flow
 import React, { Component } from "react";
-import { Input, Button } from "semantic-ui-react";
+import { Input, Button, Header, Modal, Icon } from "semantic-ui-react";
 import "../Registration/register.css";
+
+const ModalModalExample = (props) => (
+  <Modal open={props.open} onClick={props.close}  >
+    <Header icon='user x' content='Oh, no!' />
+    <Modal.Content>
+      <p>
+        {props.message}
+      </p>
+    </Modal.Content>
+  </Modal>
+)
+
 
 class Login extends Component {
   constructor(props) {
@@ -8,12 +21,18 @@ class Login extends Component {
     this.state = {
       email: "",
       password: "",
-      isUserAuthenticated: false
+      errorModal: false,
+      open : false,
+      message: ''
     };
 
     this.handleLogin = this.handleLogin.bind(this);
   }
+  open  = () => this.setState({open: true});
 
+  close = () =>this.setState({open: false});
+
+  // FISHY
   handleEmail = e => {
     let email = e.target.value;
     this.setState({ email: email });
@@ -23,22 +42,21 @@ class Login extends Component {
     this.setState({ password: password });
   };
 
-  handleRedirect = responseData => {
-    console.log(responseData);
+  handleRedirect = (responseData: Object) => {
     if (responseData.status === "S") window.location = "/dashboard";
   };
 
   checkUserInput = () => {
     if (this.state.email === "" || this.state.password === "")
-      console.log("cant be blank");
+      alert("cant be blank"); // TO DO: MAKE THIS A MODAL
   };
-
   handleLogin = () => {
     this.checkUserInput();
     const userData = {
-      email: this.state.email,
+      username: this.state.email,
       password: this.state.password
     };
+    console.log(userData);
     fetch("/auth/login", {
       method: "POST",
       headers: {
@@ -50,11 +68,21 @@ class Login extends Component {
       .then(reponse => {
         return reponse.text();
       })
-      .then(text => this.handleRedirect(JSON.parse(text)));
+      .then(text => {
+        
+        if (text !== "authorized") {
+          const  message = 'You may have enter either a wrong username or password, please try again.'
+          this.setState({ errorModal: true, open: true, message: message });
+          
+        }
+        console.log(text);
+      });
   };
   render() {
+    // eslint-disable-next-line no-lone-blocks
     return (
       <div>
+        {this.state.errorModal ? <ModalModalExample message={this.state.message} open={this.state.open}  close={this.close} /> : null}
         <Input
           className={"customInput"}
           placeholder="Email"

@@ -19,16 +19,20 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 const passport = require('passport');
+require('./passportSetup')(passport);
 
+// Initialize Passport and restore authentication state, if any, from the session.
 app.use(passport.initialize());
 app.use(passport.session());
 
 const mongoose = require('mongoose');
 
-mongoose.connect(process.env.dbURI, { useNewUrlParser: true }, () => console.log('mongose connecteed'));
-
+mongoose.connect(process.env.dbURI, { useNewUrlParser: true });
+// TO DO: use websockets instead of pusher
 const Pusher = require('pusher');
-const passportSetup = require('./passportsetup');
+// TO DO END
+// TO DO: USE THIS SOMEWHERE
+// const passportSetup = require('./passportsetup');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(
@@ -48,7 +52,6 @@ const pusher = new Pusher({
 
 app.post('/message', (req, res) => {
   const payload = req.body;
-  console.log(payload);
   pusher.trigger('my-channel', 'my-event', {
     code: payload,
   });
@@ -62,7 +65,6 @@ app.get(
   '/google',
   passport.authenticate('google', { scope: ['profile'] }),
   (req, res) => {
-    console.log(req.method);
     if (req.method === 'OPTIONS') {
       req.statusCode(200);
     }

@@ -1,5 +1,6 @@
+
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
+// import ReactDOM from "react-dom";
 import { Button, Icon, Label, Menu, Table } from "semantic-ui-react";
 import "./dashboard.css";
 
@@ -103,7 +104,6 @@ class Lobby {
   constructor() {
     this.lobby = new Map();
     this.initalizeMap(this.lobby);
-    console.log(this.lobby);
   }
 
   mapToJson = map => {
@@ -114,7 +114,7 @@ class Lobby {
     for (let i = 1; i <= 5; i++) {
       this.lobby.set(i, []);
     }
-    console.log(JSON.stringify(this.lobby));
+    
     fetch("/lobby/checkExisits", {
       method: "POST",
       headers: {

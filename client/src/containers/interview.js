@@ -22,14 +22,12 @@ class Interview extends Component {
   componentDidMount() {}
 
   handleKeyPress = event => {
-    console.log("event", event);
     if (event.key === 13) {
-      console.log("enter press here! ");
+
     }
   };
 
   handleTextChange(payload) {
-    console.log("payload", payload);
     axios.post("http://localhost:3001/message", { code: payload });
 
     const pusher = new Pusher("6b07cbe48cd4b864a86a", {

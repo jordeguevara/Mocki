@@ -15,7 +15,6 @@ const LobbyService = async (map) => {
       for (let i = 0; i <= 5; i++) {
         arr.push([]);
       }
-      console.log('not exisits');
       // if not create new User
       new Lobby({
         name: 'global',
@@ -86,12 +85,11 @@ const addUsersToLobbyService = (user) => {
       openInterveiweSessionService();
     })
     .catch((error) => {
-      console.log(error);
+      console.error(error);
     });
 };
 
 router.post('/addUsersToLobby', (req, res) => {
-  console.log(typeof req.body);
   addUsersToLobbyService(req.body);
 });
 
