@@ -1,54 +1,33 @@
+// @flow
 import React, { Component } from "react";
-
-// import { Provider } from "react-redux";
-
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  Redirect,
-  Switch
-} from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import LoginContainer from "./containers/login";
-// import store from "./store";
-
 import "semantic-ui-css/semantic.min.css";
 import Interview from "./containers/interview";
-import "./App.css";
-// import Login from "./componets/Login/login";
 import Dashboard from "./containers/dashboard";
 import FirstTimeUser from "./containers/firstTime";
-import FeedBack from "./containers/feedback";
-
+import Feedback from "./containers/feedback";
+import "./App.css";
 class App extends Component {
-  constructor() {
-    super();
-    this.state = { isAuthenticated: false, userId: "" };
-  }
-
-  handleAuth = () => {
-    this.setState({ isAuthenticated: true });
-  };
-
-  handleUserID = uuid => {
-    this.setState({ userId: uuid });
-  };
-
   render() {
+    console.log("[App]", this.props);
     return (
-      // <Provider store={store}>
-        <Router>
-          <div className="App">
-            <header className="App-header">
+      <div className="App">
+        <header className="App-header">
+          <Switch>
+            <Route path="/login" component={LoginContainer} />
+            <Route path="/firstTime" component={FirstTimeUser} />
+            <Route path="/interview" component={Interview} />
+            <Route path="/dashboard" component={Dashboard} />
+            <Route path="/firstTime" component={Feedback} />
+
+          </Switch>
+        </header>
+        {/*  TO DO: DELETE THIS Afte confrming it all works above
               <Switch>
                 <Route
                   path="/firstTime"
-                  render={props => (
-                    <FirstTimeUser
-                      userId={this.state.userId}
-                      isAuthenticated={this.state.isAuthenticated}
-                    />
-                  )}
+                 component = {FirstTimeUser}
                 />
                 <Route path="/interview" component={Interview} />
                 <Route
@@ -62,21 +41,13 @@ class App extends Component {
                 />
                 <Route
                   path="/login"
-                  render={props => (
+                 render={props => (
                     <LoginContainer
-                      handleAuth={this.handleAuth}
-                      handleUserID={this.handleUserID}
-                      userId={this.state.userId}
-                      isAuthenticated={this.state.isAuthenticated}
-                    />
-                  )}
-                />
+                     store = {this.props.store} />) } />
                 <Route path="/feedback" component={FeedBack} />
               </Switch>
-            </header>
-          </div>
-        </Router>
-      // </Provider>
+            </header> */}
+      </div>
     );
   }
 }

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Input, Button, Feed, Form, Checkbox } from "semantic-ui-react";
+import {  Button, Form} from "semantic-ui-react";
 
 import "./feedback.css";
 

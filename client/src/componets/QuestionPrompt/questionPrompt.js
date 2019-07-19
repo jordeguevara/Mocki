@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./questionPrompt.css";
-import { Button, Flag } from "semantic-ui-react";
+import { Button } from "semantic-ui-react";
 const questionData = {
   question: `A valid parentheses string is either empty (""), "(" + A + ")", or A +
   B, where A and B are valid parentheses strings, and + represents
@@ -31,7 +31,6 @@ class QuestionPrompt extends Component {
   handleEndInterviewSession() {
     // makes call to backend to close channel
     window.location = "/feedback";
-    console.log("clicked");
     fetch("/survey", {
       method: "POST",
       headers: {

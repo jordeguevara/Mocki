@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "node server.js",
+    "server": "nodemon --signal SIGHUP server.js",
     "client": "node start-client.js",
     "flow": "flow"
   },
@@ -17,7 +17,8 @@
     "eslint-config-airbnb-base": "^13.2.0",
     "eslint-plugin-import": "^2.18.0",
     "flow-bin": "^0.102.0",
-    "flow-remove-types": "^2.102.0-rc"
+    "flow-remove-types": "^2.102.0-rc",
+    "nodemon": "^1.19.1"
   },
   "dependencies": {
     "add": "^2.0.6",
@@ -33,7 +34,6 @@
     "install": "^0.12.2",
     "mongoose": "^5.5.1",
     "node-fetch": "^2.3.0",
-    "nodemon": "^1.19.0",
     "npm": "^6.9.0",
     "passport": "^0.4.0",
     "passport-github2": "^0.1.11",

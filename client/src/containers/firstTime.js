@@ -1,18 +1,18 @@
 import React, { Component } from "react";
 import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  Redirect,
-  Switch
+  // BrowserRouter as Router,
+  // Route,
+  // Link,
+  // Redirect,
+  // Switch
 } from "react-router-dom";
-import { Button, Header, Image, Modal } from "semantic-ui-react";
+import { Header, Image, Modal } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 import "./firstTime.css";
 import userPhoto from "../assets/icon.png";
+import {connect} from "react-redux"
 
 let data = require("../questions.json");
-console.log(data.Questions[0].answers[0]);
 
 const ConfirmationModal = props => (
   <Modal trigger={props.trigger}>
@@ -41,6 +41,7 @@ const ConfirmationModal = props => (
 class FirstTimeUser extends Component {
   constructor(props) {
     super(props);
+    console.log('[firstTime]',this.props)
     this.state = {
       count: 0,
       quiz: [],
@@ -85,7 +86,6 @@ class FirstTimeUser extends Component {
     this.setState({ showModal: true });
   };
   handleDashBoardRedirect = () => {
-    console.log("clicked redirect");
     window.location = "/dashboard";
   };
 
@@ -199,4 +199,11 @@ class FirstTimeUser extends Component {
   }
 }
 
-export default FirstTimeUser;
+
+const mapStateToProps = state => {
+  return {
+    ...state
+  }
+}
+
+export default connect(mapStateToProps,null)(FirstTimeUser);
