@@ -10,12 +10,11 @@ const cookieSession = require('cookie-session');
 
 const cors = require('cors');
 
-// const corsOptions = {
-//   origin: [process.env.URL, "http://localhost:3000"]
-// };
-
-app.use(cors());
-// app.options("*", cors(corsOptions));
+const corsOptions = {
+  credentials: true,
+  origin: 'http://localhost:3000',
+};
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 const passport = require('passport');

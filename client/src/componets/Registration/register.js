@@ -23,6 +23,7 @@ class Register extends Component {
     };
     this.handleSignUp = this.handleSignUp.bind(this);
     this.checkUserInput = this.checkUserInput.bind(this);
+    this.handleGithubAuth = this.handleGithubAuth.bind(this);
   }
 
   componentDidMount() {
@@ -88,7 +89,6 @@ class Register extends Component {
     } else {
       this.setState({ hiddenErrorMessage: false });
     }
-    
 
     // func: returns true if it is valid, o.w. false
     function validEmail(email) {
@@ -106,6 +106,28 @@ class Register extends Component {
     const password = e.target.value;
     this.setState({ password });
   };
+
+  handleGithubAuth() {
+    // fetch("/auth/github", {
+    //   method: "GET",
+    //   headers: {
+    //     "Access-Control-Allow-Origin": "http://127.0.0.1:3000",
+    //     "Access-Control-Allow-Methods": "POST,GET",
+    //     "Access-Control-Allow-Headers": "Content-Type, Authorization"
+    //   }
+    // });
+
+  fetch("/auth/github", {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": true
+      },
+    })
+
+  }
   render() {
     return (
       // eslint-disable-next-line react/jsx-filename-extension
@@ -134,6 +156,14 @@ class Register extends Component {
             Invalid Email/Passoword
           </span>
         </p>
+
+        <br />
+        <Button size="big">
+         <a href="http://localhost:3001/auth/github">  Github </a>
+        </Button>
+          <Button size="big">
+         <a href="http://localhost:3001/auth/logout">  logout </a>
+        </Button>
       </div>
     );
   }
