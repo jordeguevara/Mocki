@@ -3,10 +3,7 @@
 const express = require('express');
 
 const router = express.Router();
-// const passport = require('passport');
 const passport = require('passport');
-
-// console.log(passport);
 
 const User = require('../models/user-model');
 
@@ -55,26 +52,11 @@ const signUpUserService = async (userData) => {
 //   return ans;
 // };
 
-// router.get('/logout', (req, res) => {
-//   req.logout();
-//   res.status(301).redirect('http://localhost:3000/login');
-// });
-
 // router.post('/login', async (req, res) => {
 //   const userStatus = await loginAuthenticatorService(req.body);
 //   if (userStatus) res.send({ status: 'S' });
 //   else res.send({ status: 'F' });
 // });
-
-// router.get('/google', passport.authenticate('google', { scope: ['profile'] }));
-
-// router.get(
-//   '/google/success',
-//   passport.authenticate('google', {
-//     successRedirect: 'http://localhost:3000/dashboard',
-//     failureRedirect: 'http://localhost:3000/login',
-//   }),
-// );
 
 // const checkBody = (params, req, res, next) => {
 //   params.forEach((element) => {
@@ -121,28 +103,16 @@ router.get('/github',
 router.get('/github/callback',
   passport.authenticate('github', { failureRedirect: 'http://localhost:3000/error' }),
   (req, res) => {
-    // console.log(res);
+    console.log(req.user);
+    console.log(req.session);
     res.redirect('http://localhost:3000/firstTime');
   });
 
 
 router.get('/logout', (req, res) => {
   req.logout();
+  console.log(req.user);
+  console.log(req.session);
   res.redirect('http://localhost:3000/home');
 });
-
-// router.get(
-//   '/auth/github',
-//   passport.authenticate('github', { scope: ['user:email'] }),
-// );
-
-// router.get(
-//   '/auth/github/callback',
-//   passport.authenticate('github', { failureRedirect: '/login' }),
-//   (req, res) => {
-//     // Successful authentication, redirect home.
-//     res.redirect('/');
-//   },
-// );
-
 module.exports = router;
