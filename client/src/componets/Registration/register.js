@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Input, Button } from "semantic-ui-react";
+import { Input, Button, Icon } from "semantic-ui-react";
 
 import "./register.css";
 // import { Route, Link } from "react-router-dom";
@@ -117,16 +117,15 @@ class Register extends Component {
     //   }
     // });
 
-  fetch("/auth/github", {
+    fetch("/auth/github", {
       method: "GET",
       credentials: "include",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
         "Access-Control-Allow-Credentials": true
-      },
-    })
-
+      }
+    });
   }
   render() {
     return (
@@ -158,12 +157,20 @@ class Register extends Component {
         </p>
 
         <br />
-        <Button size="big">
-         <a href="http://localhost:3001/auth/github">  Github </a>
+        <Button basic color="black" href="http://localhost:3001/auth/github">
+          {/* <a href="http://localhost:3001/auth/github">
+          </a> */}
+          <Icon name="github" /> 
+          Github
         </Button>
-          <Button size="big">
-         <a href="http://localhost:3001/auth/logout">  logout </a>
-        </Button>
+        {/* <Button size="big">
+         <a href="http://localhost:3001/auth/github" icon='github' >  Github </a>
+        </Button> */}
+        <br />
+        < br/>
+        {/* <Button size="big">
+          <a href="http://localhost:3001/auth/logout"> logout </a>
+        </Button> */}
       </div>
     );
   }
