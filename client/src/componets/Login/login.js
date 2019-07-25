@@ -69,13 +69,16 @@ class Login extends Component {
         return reponse.text();
       })
       .then(text => {
-        
-        if (text !== "authorized") {
+        let response = JSON.parse(text)
+        console.log(response.status)
+        //TO DO : lowercase this
+        if (response.status !== "Authenticated") {
           const  message = 'You may have enter either a wrong username or password, please try again.'
           this.setState({ errorModal: true, open: true, message: message });
           
         }
-        console.log(text);
+        //TO DO: check if user is firsTime ow dashboard
+        window.location.href = '/firstTime'
       });
   };
   render() {

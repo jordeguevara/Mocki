@@ -1,8 +1,32 @@
+// @flow
 
-
-// const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+const GitHubStrategy = require('passport-github2').Strategy;
 const Users = require('./models/user-model');
+
+const findOrCreateUser = (profile, done) => {
+  Users.find({ GitHubID: profile.id }, (err, docs) => {
+    const userFound = docs;
+    if (!userFound || userFound.length === 0) {
+      console.log('no %s found, creating user ', profile.id);
+      const githubUser = new Users({
+        username: profile.username,
+        level: null,
+        firstTimeUser: true,
+        GitHubID: profile.id,
+      });
+
+      githubUser.save((err, results) => {
+        if (err) { console.error(err); }
+        done(null, results);
+      });
+    } else {
+      // TO DO: Should not be array should be an object
+      done(null, userFound[0]._id);
+    }
+  });
+};
+
 
 module.exports = (passport) => {
   passport.serializeUser((user, cb) => cb(null, user.id));
@@ -29,86 +53,13 @@ module.exports = (passport) => {
       });
     }),
   ));
+
+  passport.use(new GitHubStrategy({
+    clientID: process.env.GITHUB_CLIENT_ID,
+    clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    callbackURL: 'http://localhost:3001/auth/github/callback',
+  },
+  ((accessToken, refreshToken, profile, done) => {
+    findOrCreateUser(profile, done);
+  })));
 };
-
-
-// const passport = require('passport');
-// const GoogleStrategy = require('passport-google-oauth20');
-// const GitHubStrategy = require('passport-github2');
-// const LocalStrategy = require('passport-local').Strategy;
-// const User = require('./models/user-model');
-// require('dotenv').config();
-
-// const googleCredentials = {
-//   callbackURL: '/auth/google/success',
-//   clientID: process.env.google_client_id,
-//   clientSecret: process.env.google_client_secret,
-// };
-
-// passport.serializeUser((user, done) => {
-//   done(null, user.id); // mongoDB ID
-// });
-
-// passport.deserializeUser((id, done) => {
-//   User.findById(id).then((user) => {
-//     done(null, user.id); // mongoDB ID
-//   });
-// });
-
-// passport.use(
-//   new GoogleStrategy(
-//     googleCredentials,
-//     (accesToken, refreshToken, profile, done) => {
-//       // check if user exisits already
-//       User.findOne({ googleID: profile.id }).then((currentUser) => {
-//         if (currentUser) {
-//           // already has user
-//           done(null, currentUser);
-//         } else {
-//           // if not create new User
-//           new User({
-//             username: profile.displayName,
-//             googleID: profile.id,
-//           })
-//             .save()
-//             .then((newUser) => {
-//               done(null, newUser);
-//             });
-//         }
-//       });
-//     },
-//   ),
-// );
-
-// passport.use(
-//   new LocalStrategy(((username, password, done) => {
-//     User.findOne({ username }, (err, user) => {
-//       if (err) {
-//         return done(err);
-//       }
-//       if (!user) {
-//         return done(null, false, { message: 'Incorrect username.' });
-//       }
-//       if (!user.validPassword(password)) {
-//         return done(null, false, { message: 'Incorrect password.' });
-//       }
-//       return done(null, user);
-//     });
-//   })),
-// );
-
-// // passport.use() LinkedIn Strategy
-// passport.use(
-//   new GitHubStrategy(
-//     {
-//       clientID: process.env.github_client_id,
-//       clientSecret: process.env.github_client_secret,
-//       callbackURL: 'http://localhost:3000/login/github/success',
-//     },
-//     ((accessToken, refreshToken, profile, done) => {
-//       User.findOrCreate({ githubId: profile.id }, (err, user) => done(err, user));
-//     }),
-//   ),
-// );
-
-// passport.use() Github Strategy
