@@ -4,6 +4,29 @@ const LocalStrategy = require('passport-local').Strategy;
 const GitHubStrategy = require('passport-github2').Strategy;
 const Users = require('./models/user-model');
 
+const findOrCreateUser = (profile, done) => {
+  Users.find({ GitHubID: profile.id }, (err, docs) => {
+    const userFound = docs;
+    if (!userFound || userFound.length === 0) {
+      console.log('no %s found, creating user ', profile.id);
+      const githubUser = new Users({
+        username: profile.username,
+        level: null,
+        firstTimeUser: true,
+        GitHubID: profile.id,
+      });
+
+      githubUser.save((err, results) => {
+        if (err) { console.error(err); }
+        done(null, results);
+      });
+    } else {
+      // TO DO: Should not be array should be an object
+      done(null, userFound[0]._id);
+    }
+  });
+};
+
 
 module.exports = (passport) => {
   passport.serializeUser((user, cb) => cb(null, user.id));
@@ -37,25 +60,6 @@ module.exports = (passport) => {
     callbackURL: 'http://localhost:3001/auth/github/callback',
   },
   ((accessToken, refreshToken, profile, done) => {
-    const userFound = Users.findOne({ GitHubID: profile.id })
-      .then((user) => { console.log(user); done(null, user._id); });
-    if (!userFound) {
-      console.log('no %s found', profile.id);
-    }
-    // if user does not exisit
-    // console.log('==>', profile.id);
-    // create user with default parametes
-    // else
-    // if he does send him somewhere else
-    const githubUser = new Users({
-      username: profile.username,
-      level: null,
-      firstTimeUser: true,
-      GitHubID: profile.id,
-    });
-
-    githubUser.save((err, results) => {
-      done(null, results);
-    });
+    findOrCreateUser(profile, done);
   })));
 };
