@@ -158,16 +158,11 @@ class Register extends Component {
 
         <br />
         <Button basic color="black" href="http://localhost:3001/auth/github">
-          {/* <a href="http://localhost:3001/auth/github">
-          </a> */}
+
           <Icon name="github" /> 
           Github
         </Button>
-        {/* <Button size="big">
-         <a href="http://localhost:3001/auth/github" icon='github' >  Github </a>
-        </Button> */}
         <br />
-        < br/>
         {/* <Button size="big">
           <a href="http://localhost:3001/auth/logout"> logout </a>
         </Button> */}

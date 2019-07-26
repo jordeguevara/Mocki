@@ -56,7 +56,6 @@ class Login extends Component {
       username: this.state.email,
       password: this.state.password
     };
-    console.log(userData);
     fetch("/auth/login", {
       method: "POST",
       headers: {
@@ -69,6 +68,7 @@ class Login extends Component {
         return reponse.text();
       })
       .then(text => {
+        console.log(text)
         let response = JSON.parse(text)
         console.log(response.status)
         //TO DO : lowercase this
