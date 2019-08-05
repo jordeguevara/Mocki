@@ -64,6 +64,7 @@ class FirstTimeUser extends Component {
   };
 
   handleNextQuestion = () => {
+
     this.setState({ count: this.state.count + 1 });
   };
 
@@ -76,6 +77,15 @@ class FirstTimeUser extends Component {
 
     let arr = this.state.quiz;
     arr[this.state.count] = event.target.innerHTML;
+    console.log(event.target.style.background)
+    if(!event.target.style.background || event.target.style.background === 'transparent' ){
+      event.target.style.background = '#62b38f';
+    }
+    else{
+      // eslint-disable-next-line no-unused-expressions
+      event.target.style.background = 'transparent';
+    }
+      
     this.setState({ quiz: arr });
   };
 
@@ -151,8 +161,8 @@ class FirstTimeUser extends Component {
       );
       form = (
         <div>
-          <span className="option">
-            <button onClick={this.handleButtonPressed} className="answer">
+          <span className="option"  >
+            <button onClick={this.handleButtonPressed}  className="answer">
               A
             </button>
             {data.Questions[i].answers[0].a}
@@ -169,8 +179,8 @@ class FirstTimeUser extends Component {
             </button>
             {data.Questions[i].answers[0].c}
           </span>
-          <span onClick={this.handleButtonPressed} className="option">
-            <button className="answer">D</button>{" "}
+          <span  className="option">
+            <button onClick={this.handleButtonPressed} className="answer">D</button>
             {data.Questions[i].answers[0].d}
           </span>
         </div>

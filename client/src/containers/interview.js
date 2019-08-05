@@ -4,41 +4,36 @@ import AceEditor from "react-ace";
 import "./interview.css";
 import QuestionPrompt from "../componets/QuestionPrompt/questionPrompt";
 import axios from "axios";
-import Pusher from "pusher-js";
 import "brace/mode/java";
 import "brace/mode/javascript";
 import "brace/theme/monokai";
+const io = require("socket.io-client");
+const socket = io("http://localhost:3001");
 
 class Interview extends Component {
   constructor(props) {
     super(props);
     this.state = {
       redirect: false,
-      initialCode: `const helloWorld = () => {console.log('Hello World')}`
+      initialCode: `const helloWorld = () => {console.log('Hello World')}`,
+      code: ""
     };
 
     this.handleTextChange = this.handleTextChange.bind(this);
   }
-  componentDidMount() {}
+  componentDidMount() {
+    socket.on("chat", data => this.setState({ initialCode: data }));
+  }
 
   handleKeyPress = event => {
     if (event.key === 13) {
-
     }
   };
 
   handleTextChange(payload) {
-    axios.post("http://localhost:3001/message", { code: payload });
-
-    const pusher = new Pusher("6b07cbe48cd4b864a86a", {
-      cluster: "us3",
-      encrypted: true
-    });
-    var self = this;
-    var channel = pusher.subscribe("my-channel");
-    channel.bind("my-event", function(data) {
-      self.setState({ initialCode: data.code.code });
-    });
+    this.setState({ code: payload });
+    this.setState({ initialCode: this.state.code });
+    socket.emit("chat", payload);
   }
   render() {
     return (

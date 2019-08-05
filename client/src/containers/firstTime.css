@@ -28,12 +28,22 @@
   background: transparent;
 }
 
-.answer:hover {
+.answer:hover, .answer:focus {
   background: #62b38f;
 }
 
-.answer:focus {
+
+.answer:active {
   background: #62b38f;
+transform: translateY(1px);
+filter: saturate(150%);
+
+}
+
+.answer.active {
+  background: #62b38f;
+
+
 }
 
 .nextQuestionBtn {
