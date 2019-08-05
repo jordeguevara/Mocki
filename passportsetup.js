@@ -2,6 +2,7 @@
 
 const LocalStrategy = require('passport-local').Strategy;
 const GitHubStrategy = require('passport-github2').Strategy;
+const bcrypt = require('bcrypt');
 const Users = require('./models/user-model');
 
 const findOrCreateUser = (profile, done) => {
@@ -17,7 +18,9 @@ const findOrCreateUser = (profile, done) => {
       });
 
       githubUser.save((err, results) => {
-        if (err) { console.error(err); }
+        if (err) {
+          console.error(err);
+        }
         done(null, results);
       });
     } else {
@@ -27,39 +30,50 @@ const findOrCreateUser = (profile, done) => {
   });
 };
 
-
 module.exports = (passport) => {
   passport.serializeUser((user, cb) => cb(null, user.id));
 
   passport.deserializeUser((id, cb) => {
     Users.findById(id, (err, user) => {
-      if (err) { return cb(err); }
+      if (err) {
+        return cb(err);
+      }
       return cb(null, user);
     });
   });
 
-
-  passport.use(new LocalStrategy(
-    ((username, password, done) => {
+  passport.use(
+    new LocalStrategy((username, password, done) => {
       Users.findOne({ username }, (err, user) => {
-        if (err) { return done(err); }
+        if (err) {
+          return done(err);
+        }
         if (!user) {
           return done(null, false, { message: 'Incorrect username.' });
         }
-        if (user.password !== password) {
-          return done(null, false, { message: 'Incorrect username.' });
-        }
-        return done(null, user._id);
+
+        bcrypt.compare(password, user.password, (error, res) => {
+          if (error) return done(error);
+          if (res) {
+            return done(null, user._id);
+          }
+
+          return done(null, false, { message: 'Incorrect password.' });
+        });
       });
     }),
-  ));
+  );
 
-  passport.use(new GitHubStrategy({
-    clientID: process.env.GITHUB_CLIENT_ID,
-    clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: 'http://localhost:3001/auth/github/callback',
-  },
-  ((accessToken, refreshToken, profile, done) => {
-    findOrCreateUser(profile, done);
-  })));
+  passport.use(
+    new GitHubStrategy(
+      {
+        clientID: process.env.GITHUB_CLIENT_ID,
+        clientSecret: process.env.GITHUB_CLIENT_SECRET,
+        callbackURL: 'http://localhost:3001/auth/github/callback',
+      },
+      (accessToken, refreshToken, profile, done) => {
+        findOrCreateUser(profile, done);
+      },
+    ),
+  );
 };

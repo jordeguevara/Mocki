@@ -11,4 +11,4 @@ Possibly hard to debug due to ESLINT 5.16.1
 
 - Login: 
     ensure that you can not overwrite when registering
-    encrypt data going into the database
+    start introducing test for front and back end

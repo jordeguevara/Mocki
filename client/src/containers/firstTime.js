@@ -1,16 +1,9 @@
 import React, { Component } from "react";
-import {
-  // BrowserRouter as Router,
-  // Route,
-  // Link,
-  // Redirect,
-  // Switch
-} from "react-router-dom";
 import { Header, Image, Modal } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 import "./firstTime.css";
 import userPhoto from "../assets/icon.png";
-import {connect} from "react-redux"
+import { connect } from "react-redux";
 
 let data = require("../questions.json");
 
@@ -41,28 +34,37 @@ const ConfirmationModal = props => (
 class FirstTimeUser extends Component {
   constructor(props) {
     super(props);
-    console.log('[firstTime]',this.props)
+    console.log("[firstTime]", this.props);
     this.state = {
       count: 0,
       quiz: [],
       showModal: false,
-      score: 0
+      score: 0,
+      level: 0,
+      userId: this.props.registration.userId
     };
 
     this.handleNextQuestion = this.handleNextQuestion.bind(this);
     this.handleDashBoardRedirect = this.handleDashBoardRedirect.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.convertLettersToNumbers = this.convertLettersToNumbers.bind(this);
+    this.handleLevelService = this.handleLevelService.bind(this);
   }
   // Saves level to DB
   handleLevelService = () => {
-    fetch("/updateLevel", {
-      method: "PUT",
-      body: JSON.stringify({ level: this.state.level })
-    });
+    console.log(this.state)
+    fetch("/survey/updateLevel", {
+      method: "POST",
+              headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+      body: JSON.stringify ({...this.state, firstTimeUser: false})
+    }).then(text => text).then(text => console.log(text)).catch(err => console.error(err))
   };
 
   handleNextQuestion = () => {
+
     this.setState({ count: this.state.count + 1 });
   };
 
@@ -75,10 +77,16 @@ class FirstTimeUser extends Component {
 
     let arr = this.state.quiz;
     arr[this.state.count] = event.target.innerHTML;
+    console.log(event.target.style.background)
+    if(!event.target.style.background || event.target.style.background === 'transparent' ){
+      event.target.style.background = '#62b38f';
+    }
+    else{
+      // eslint-disable-next-line no-unused-expressions
+      event.target.style.background = 'transparent';
+    }
+      
     this.setState({ quiz: arr });
-
-    //TO DO add it to USER Model
-    // and remove firstTime user
   };
 
   handleSubmit = () => {
@@ -86,7 +94,8 @@ class FirstTimeUser extends Component {
     this.setState({ showModal: true });
   };
   handleDashBoardRedirect = () => {
-    window.location = "/dashboard";
+    this.handleLevelService()
+    // window.location = "/dashboard";
   };
 
   weigh = arr => {
@@ -109,7 +118,9 @@ class FirstTimeUser extends Component {
     arr = this.weigh(arr);
     const score = arr.reduce((acc, val) => (acc += val), 0); //calcuate score from arr
     let level = Math.floor(score / arr.length);
-    this.setState({ quiz: arr, score: score, level: level });
+    this.setState((prevState, props) => {
+      return { quiz: arr, score: score, level: level };
+    });
   };
 
   convertLettersToNumbers = value => {
@@ -150,8 +161,8 @@ class FirstTimeUser extends Component {
       );
       form = (
         <div>
-          <span className="option">
-            <button onClick={this.handleButtonPressed} className="answer">
+          <span className="option"  >
+            <button onClick={this.handleButtonPressed}  className="answer">
               A
             </button>
             {data.Questions[i].answers[0].a}
@@ -168,8 +179,8 @@ class FirstTimeUser extends Component {
             </button>
             {data.Questions[i].answers[0].c}
           </span>
-          <span onClick={this.handleButtonPressed} className="option">
-            <button className="answer">D</button>{" "}
+          <span  className="option">
+            <button onClick={this.handleButtonPressed} className="answer">D</button>
             {data.Questions[i].answers[0].d}
           </span>
         </div>
@@ -193,17 +204,20 @@ class FirstTimeUser extends Component {
           clickMethod={this.handleDashBoardRedirect}
           trigger={submitBtn}
           open={this.state.showModal}
+          send={this.handleLevelService}
         />
       </div>
     );
   }
 }
 
-
 const mapStateToProps = state => {
   return {
     ...state
-  }
-}
+  };
+};
 
-export default connect(mapStateToProps,null)(FirstTimeUser);
+export default connect(
+  mapStateToProps,
+  null
+)(FirstTimeUser);
