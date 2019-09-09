@@ -68,6 +68,21 @@ mongoose.set('useFindAndModify', false);
 app.set('port', process.env.PORT || 3001);
 app.use('/', require('./routes'));
 
+
+if (process.env.NODE_ENV === 'production') {
+// ... other imports 
+const path = require("path")
+
+// ... other app.use middleware 
+app.use(express.static(path.join(__dirname, "client", "build")))
+
+// ...
+// Right before your app.listen(), add this:
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
+
+}
 // TO DO: might need to move this
 const server = app.listen(app.get('port'), (req) => {
   console.log(`Server at: http://localhost:${app.get('port')}/`);
