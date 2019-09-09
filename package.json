@@ -14,9 +14,6 @@
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^4.1.0",
-    "eslint": "^5.16.0",
-    "eslint-config-airbnb-base": "^13.2.0",
-    "eslint-plugin-import": "^2.18.0",
     "flow-bin": "^0.102.0",
     "flow-remove-types": "^2.102.0-rc",
     "nodemon": "^1.19.1"
