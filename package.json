@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "client-install": "npm install --prefix client",
     "heroku-postbuild": "cd client && npm install && npm run build",
     "start": "concurrently \"npm run server\" \"npm run client\"",
     "server": "nodemon --signal SIGHUP server.js",
