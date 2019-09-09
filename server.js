@@ -21,6 +21,7 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 const passport = require('passport');
+console.log('here')
 require('./passportSetup')(passport);
 
 app.use(session({
