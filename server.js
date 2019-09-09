@@ -22,7 +22,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 const passport = require('passport');
 console.log('here')
-require('./passportSetup')(passport);
+require('/Users/jordeguevara/Desktop/Mocki/passportSetup.js')(passport);
 
 app.use(session({
   secret: 'keyboard cat',
