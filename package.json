@@ -4,10 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "client-install": "npm install --prefix client",
     "start": "concurrently \"npm run server\" \"npm run client\"",
     "server": "nodemon --signal SIGHUP server.js",
     "client": "node start-client.js",
-    "flow": "flow"
+    "flow": "flow",
+    "heroku-postbuild":      "NPM_CONFIG_PRODUCTION=false npm install --prefix client        && npm run build --prefix client" 
   },
   "author": "",
   "license": "ISC",

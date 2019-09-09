@@ -1,6 +1,7 @@
 .interviewSessionContainer{
+    margin-top: 5%;
     width: 90%;
-    height: 750px;
+    height: 1000px;
 
 }
 
@@ -12,10 +13,36 @@
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    margin-top: 100px;
+    margin-top: 30px;
     background: #fff;
 
 }
+
+.some{
+    background: #fff;
+    flex:1;
+    height: 200px;
+
+}
+.analytics{
+    padding-top: 2.5%;
+    padding-bottom: 2.5%;
+    margin: 0 auto;
+    width: 90%;
+}
+
+#one{
+ flex-basis: 40%;
+
+}
+#two{
+    /* background: green; */
+    flex-basis: 30%;
+   }
+   #three{
+    /* background: yellow; */
+    flex-basis: 40%;
+   }
 
 .startSession{
     width: 90%;
@@ -25,14 +52,26 @@
     border-radius: 100px;
 }
 
-.left{
+.left1{
+    background: #fff;
     flex: 1;
     height: 100px;
+    padding-top: 12.5px;
 }
 
-.right{
+.profilePhoto{
+    margin-left: -50%;
+}
+
+.con{
+    background: #fff
+}
+
+.right1{
+    background: #fff;
     flex: 1;
-    height: 100px;;
+    height: 100px;
+    padding-top: 12.5px;
    
 }
 

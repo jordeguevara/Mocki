@@ -12,3 +12,6 @@ Possibly hard to debug due to ESLINT 5.16.1
 - Login: 
     ensure that you can not overwrite when registering
     start introducing test for front and back end
+
+
+Front-end figure out bette way of selecting answers 
