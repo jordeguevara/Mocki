@@ -9,7 +9,7 @@
     "server": "nodemon --signal SIGHUP server.js",
     "client": "node start-client.js",
     "flow": "flow",
-    "heroku-postbuild":      "NPM_CONFIG_PRODUCTION=false npm install --prefix client        && npm run build --prefix client" 
+    "heroku-postbuild": "cd client && npm install && npm run build" 
   },
   "author": "",
   "license": "ISC",
