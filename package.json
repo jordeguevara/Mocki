@@ -4,10 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "cd client && npm install && npm run build",
     "start": "concurrently \"npm run server\" \"npm run client\"",
     "server": "nodemon --signal SIGHUP server.js",
-    "client": "node start-client.js",
-    "flow": "flow"
+    "flow": "flow",
+    "client": "node start-client.js"
   },
   "author": "",
   "license": "ISC",

@@ -5,6 +5,8 @@ import { Button, Icon, Label, Menu, Table } from "semantic-ui-react";
 import "./dashboard.css";
 
 import userPhoto from "../assets/icon.png";
+import BarChart from "../componets/BarChart/barchart";
+import PieChart from "../componets/PieChart/piechart";
 
 var data = [
   { id: 1, name: "Java", value: "2" },
@@ -73,16 +75,17 @@ class Dashboard extends Component {
 
   handleMatching = () => {
     this.lobby.matchOnClick();
+    //jo:
   };
 
   render() {
     return (
       <div className={"interviewSessionContainer"}>
         <div className={"startSession"}>
-          <div className={"left"}>
-            <img src={userPhoto} width="75" height="75" alt="cartoon person" />
+          <div className={"left1"}>
+            <img src={userPhoto} width="75" height="75" alt="cartoon person" className='profilePhoto' />
           </div>
-          <div className={"right"}>
+          <div className={"right1"}>
             <div className="startButton">
               <Button onClick={this.handleMatching} color="red">
                 Join Session
@@ -90,6 +93,28 @@ class Dashboard extends Component {
             </div>
           </div>
         </div>
+        <div className='analytics'>
+          <div class="ui stackable three column grid">
+
+            <div class="column">
+              <div class="some">
+              <PieChart/>
+              </div>
+            </div>
+
+            <div class="column">
+              <div class="some">
+              </div>
+            </div>
+
+            <div class="column">
+              <div class="some">
+              </div>
+            </div>
+
+          </div>
+        </div>
+
         <div className={"sessionDashboard"}>
           <p>Previous Sessions:</p>
           <br />
@@ -114,7 +139,7 @@ class Lobby {
     for (let i = 1; i <= 5; i++) {
       this.lobby.set(i, []);
     }
-    
+
     fetch("/lobby/checkExisits", {
       method: "POST",
       headers: {

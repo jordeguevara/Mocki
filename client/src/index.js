@@ -1,35 +1,10 @@
-// import React from "react";
-// import ReactDOM from "react-dom";
-// import "./index.css";
-// import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-// import { Provider } from "react-redux"
-// import { BrowserRouter, Route } from "react-router-dom";
-// import store from "./store";
-// ReactDOM.render(
-//   <BrowserRouter>
-//     <Provider store={store}>
-//       <App />
-//       {/* <Route component={App} /> */}
-//     </Provider>
-//   </BrowserRouter>,
-//   document.getElementById("root")
-// );
-
-
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-import { Provider } from "react-redux"
-import { BrowserRouter, Route } from "react-router-dom";
-import store from "./store";
 
 ReactDOM.render(
-  <BrowserRouter>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </BrowserRouter>,
+      <App />,
   document.getElementById("root")
 );
 
