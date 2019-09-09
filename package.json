@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "heroku-postbuild": "cd client && npm install && npm run build",
+    "build": "cd client && npm install && npm run build",
     "start": "concurrently \"npm run server\" \"npm run client\"",
     "server": "nodemon --signal SIGHUP server.js",
     "flow": "flow",
