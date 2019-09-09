@@ -11,7 +11,7 @@ const socket = require('socket.io');
 
 
 const cors = require('cors');
-
+//serve
 const corsOptions = {
   credentials: true,
   origin: 'http://localhost:3000',
