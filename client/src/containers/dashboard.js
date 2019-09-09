@@ -75,6 +75,7 @@ class Dashboard extends Component {
 
   handleMatching = () => {
     this.lobby.matchOnClick();
+    //jo:
   };
 
   render() {
