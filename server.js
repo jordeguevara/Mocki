@@ -81,6 +81,13 @@ if (process.env.NODE_ENV === 'production') {
 
 }
 
+
+// TO DO: might need to move this
+const server = app.listen(port, (req) => {
+  console.log(`Server at: ${app.get('port')}`);
+});
+
+
 const io = socket(server);
 const port = process.env.Port || 3000;
 
@@ -96,11 +103,4 @@ io.on('connection', (sock) => {
     io.emit('chat', data);
   });
 });
-
-
-// TO DO: might need to move this
-const server = app.listen(port, (req) => {
-  console.log(`Server at: ${app.get('port')}`);
-});
-
 
