@@ -71,17 +71,13 @@ app.use('/', require('./routes'));
 
 if (process.env.NODE_ENV === 'production') {
 
-  app.get(/^\/(?!api).*/, (req, res) => { // don't serve react app to api routes
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-  });
-
   const path = require("path")
 
   app.use(express.static(path.join(__dirname, "client", "build")))
 
-  // app.get("*", (req, res) => {
-  //   res.sendFile(path.join(__dirname, "client", "build", "index.html"));
-  // });
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+  });
 
 }
 // TO DO: might need to move this
