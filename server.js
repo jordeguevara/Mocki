@@ -65,7 +65,7 @@ mongoose.set('useFindAndModify', false);
 // });
 
 
-app.set('port', process.env.PORT || 3001);
+// app.set('port', process.env.PORT || 3001);
 app.use('/', require('./routes'));
 
 
@@ -80,19 +80,27 @@ if (process.env.NODE_ENV === 'production') {
   });
 
 }
-// TO DO: might need to move this
-const server = app.listen(app.get('port'), (req) => {
-  console.log(`Server at: ${app.get('port')}/`);
-});
-const io = socket(server);
 
-// io.on('connection', (sock) => {
-//   console.log('connected to ', sock.id);
-//   sock.on('disconnect', () => {
-//     console.log('user disconnected');
-//   });
-//   sock.on('chat', (data) => {
-//     console.log('data', data);
-//     io.emit('chat', data);
-//   });
-// });
+const io = socket(server);
+const port = process.env.Port || 3000;
+
+
+io.on('connection', (sock) => {
+  sock.emit('hello', {message:'Im in'})
+  console.log('connected to ', sock.id);
+  // sock.on('disconnect', () => {
+  //   console.log('user disconnected');
+  // });
+  sock.on('chat', (data) => {
+    console.log('data', data);
+    io.emit('chat', data);
+  });
+});
+
+
+// TO DO: might need to move this
+const server = app.listen(port, (req) => {
+  console.log(`Server at: ${app.get('port')}`);
+});
+
+
