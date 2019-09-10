@@ -86,13 +86,13 @@ const server = app.listen(app.get('port'), (req) => {
 });
 const io = socket(server);
 
-io.on('connection', (sock) => {
-  console.log('connected to ', sock.id);
-  sock.on('disconnect', () => {
-    console.log('user disconnected');
-  });
-  sock.on('chat', (data) => {
-    console.log('data', data);
-    io.emit('chat', data);
-  });
-});
+// io.on('connection', (sock) => {
+//   console.log('connected to ', sock.id);
+//   sock.on('disconnect', () => {
+//     console.log('user disconnected');
+//   });
+//   sock.on('chat', (data) => {
+//     console.log('data', data);
+//     io.emit('chat', data);
+//   });
+// });
