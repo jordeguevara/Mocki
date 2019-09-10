@@ -70,22 +70,23 @@ app.use('/', require('./routes'));
 
 
 if (process.env.NODE_ENV === 'production') {
-// ... other imports 
-const path = require("path")
 
-// ... other app.use middleware 
-app.use(express.static(path.join(__dirname, "client", "build")))
+  app.get(/^\/(?!api).*/, (req, res) => { // don't serve react app to api routes
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  });
 
-// ...
-// Right before your app.listen(), add this:
-app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
-});
+  const path = require("path")
+
+  app.use(express.static(path.join(__dirname, "client", "build")))
+
+  // app.get("*", (req, res) => {
+  //   res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+  // });
 
 }
 // TO DO: might need to move this
 const server = app.listen(app.get('port'), (req) => {
-  console.log(`Server at: http://localhost:${app.get('port')}/`);
+  console.log(`Server at: ${app.get('port')}/`);
 });
 const io = socket(server);
 
