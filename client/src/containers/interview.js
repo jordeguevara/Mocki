@@ -8,7 +8,7 @@ import "brace/mode/java";
 import "brace/mode/javascript";
 import "brace/theme/monokai";
 const io = require("socket.io-client");
-let socket = io.connect();
+let socket = io();
 
 class Interview extends Component {
   constructor(props) {
@@ -21,13 +21,16 @@ class Interview extends Component {
 
     this.handleTextChange = this.handleTextChange.bind(this);
   }
-  componentDidMount() {
-       socket.on('chat', function(data) {
-      socket.emit('join', 'hello world from the client!');
-      this.setState({ initialCode: data })
-    });
-        
-    // socket.on("chat", data => this.setState({ initialCode: data }));
+  componentDidUpdate() {
+    // socket.on("chat", function(data) {
+    //   socket.emit("join", "hello world from the client!");
+    //   console.log(this);
+    //   this.setState({ initialCode: data });
+    // });
+    socket.on("chat", data => {
+      console.log('here')
+      this.setState({ initialCode: data })}
+    );
   }
 
   handleKeyPress = event => {
