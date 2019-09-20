@@ -90,7 +90,7 @@ io.on('connection', (sock) => {
   //   console.log('user disconnected');
   // });
   sock.on('chat', (data) => {
-    console.log('data', data);
+    // console.log('data', data);
     io.emit('chat', data);
   });
 });

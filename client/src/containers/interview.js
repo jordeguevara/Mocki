@@ -28,7 +28,6 @@ class Interview extends Component {
     //   this.setState({ initialCode: data });
     // });
     socket.on("chat", data => {
-      console.log('here')
       this.setState({ initialCode: data })}
     );
   }
