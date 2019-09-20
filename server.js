@@ -70,22 +70,16 @@ app.use('/', require('./routes'));
 
 
 if (process.env.NODE_ENV === 'production') {
-
   const path = require("path")
-
   app.use(express.static(path.join(__dirname, "client", "build")))
-
   app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "client", "build", "index.html"));
   });
-
 }
 
 
 const port = process.env.PORT || 3001;
-
 const server = app.listen(port);
-
 const io = socket(server);
 
 
