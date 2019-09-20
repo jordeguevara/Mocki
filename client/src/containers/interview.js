@@ -8,7 +8,8 @@ import "brace/mode/java";
 import "brace/mode/javascript";
 import "brace/theme/monokai";
 const io = require("socket.io-client");
-const socket = io("http://localhost:3001");
+var host = location.origin.replace(/^http/, 'ws');
+const socket = io(host);
 
 class Interview extends Component {
   constructor(props) {
