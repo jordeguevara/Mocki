@@ -22,7 +22,7 @@
     "add": "^2.0.6",
     "amazon-cognito-identity-js": "^3.0.10",
     "aws-sdk": "^2.435.0",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "bcrypt": "^3.0.6",
     "body-parser": "^1.18.3",
     "cookie-parser": "^1.4.4",
